@@ -66,12 +66,12 @@ export default function Contact() {
             GET IN TOUCH
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-            Let's Work Together
+            Let&apos;s Work Together
           </h2>
           <div className=" mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded"></div>
           <p className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-gray-300 px-4">
-            Have a project in mind? We'd love to hear from you. Reach out to us
-            and let's discuss how we can help you build something amazing.
+            Have a project in mind? We&apos;d love to hear from you. Reach out to us
+            and let&apos;s discuss how we can help you build something amazing.
           </p>
         </div>
 
@@ -254,7 +254,7 @@ export default function Contact() {
               </div>
 
               <p className="text-center text-sm text-gray-400">
-                We'll get back to you within 24 hours
+                We&apos;ll get back to you within 24 hours
               </p>
             </form>
           </div>
