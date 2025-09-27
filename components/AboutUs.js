@@ -51,9 +51,6 @@ export default function AboutUs() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <span className="text-xl font-bold text-blue-700 tracking-wider uppercase mb-4 block">
-            Who We Are
-          </span>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             About Our Company
           </h2>

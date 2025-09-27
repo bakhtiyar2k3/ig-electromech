@@ -83,14 +83,14 @@ const BackgroundVideo = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Loading Screen */}
-      {!isLoaded && (
+      {/* {!isLoaded && (
         <div className="absolute inset-0 bg-black flex items-center justify-center z-50">
           <div className="text-center text-white">
             <div className="w-12 h-12 border-3 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-lg font-medium">Loading Experience...</p>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Video Elements */}
       <video

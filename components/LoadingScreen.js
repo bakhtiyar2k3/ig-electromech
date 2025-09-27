@@ -46,9 +46,9 @@ export default function LoadingScreen({ onFinish }) {
         {/* Reveal text with SplittingText */}
         <div className="ml-40 -mt-15">
           <SplittingText
-            className="text-3xl tracking-tight text-gray-700"
+            className="text-3xl tracking-tight font-semibold text-gray-700"
             text="Innovation for Generations"
-            type="chars" // reveals smoothly left-to-right
+            type="words" // reveals smoothly left-to-right
           />
         </div>
       </div>

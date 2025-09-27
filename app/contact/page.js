@@ -70,7 +70,7 @@ export default function ContactPage() {
   return (
     <div className="bg-white pt-20 max-w-7xl mx-auto">
       <section
-        className="relative text-center bg-fixed bg-center bg-cover text-white py-16 md:py-24 px-4"
+        className="relative text-center bg-fixed bg-center bg-cover text-white py-16 md:pt-24 px-4"
         style={{ backgroundImage: "url('/serviceBgMain.jpg')" }}
       >
         {/* Dark overlay */}

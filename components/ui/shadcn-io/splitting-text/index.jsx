@@ -3,7 +3,7 @@ import * as React from 'react';
 import { motion, useInView } from 'motion/react';
 
 const defaultItemVariant = {
-  hidden: { x: 150, opacity: 0 },
+  hidden: { x:10, opacity: 0 },
   visible: {
     x: 0,
     opacity: 1,

@@ -234,7 +234,7 @@ export default function ServicesPage() {
           {services.map((service, serviceIndex) => (
             <div
               key={serviceIndex}
-              className="max-w-7xl mx-auto border-b-3 pb-10 mb-10 border-black/70"
+              className="max-w-7xl mx-auto border-b-2 pb-10 mb-10 border-black/50"
             >
               {/* Service Category Header */}
               <motion.div
@@ -247,7 +247,6 @@ export default function ServicesPage() {
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
                   {service.category}
                 </h2>
-                <div className="w-24 h-1 bg-red-600 mx-auto"></div>
               </motion.div>
 
               {/* Carousel Container with Fixed Background per category (text-only slides) */}
