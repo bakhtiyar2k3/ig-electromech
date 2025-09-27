@@ -81,15 +81,12 @@ export default function AboutUs() {
 
             {/* Experience badge */}
 
-            <div className="absolute -bottom-6 -right-6 bg-gradient-to-l from-red-500 to-blue-500 p-1 rounded-xl shadow text-white">
-              <div className="flex items-center gap-3 bg-white rounded-xl px-6 py-4">
-                <FaRegClock className="text-black" size={50} />
-
-                <div>
-                  <p className="text-2xl font-bold text-black">10+ Years of</p>
-                  <p className="text-sm text-gray-900">Technical Excellence</p>
-                </div>
-              </div>
+            <div className="absolute -bottom-6 -right-6 shadow border-2 border-black/50 text-white flex items-center gap-3 bg-white rounded-xl px-6 py-4">
+              <FaRegClock className="text-black" size={50} />
+              <div>
+                <p className="text-2xl font-bold text-black">10+ Years of</p>
+                <p className="text-sm text-gray-900">Technical Excellence</p>
+              </div>{" "}
             </div>
           </div>
 
@@ -103,9 +100,7 @@ export default function AboutUs() {
           >
             <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 leading-tight">
               Delivering Reliable{" "}
-              <span className="text-blue-600">
-                Electromechanical Solutions
-              </span>
+              <span className="text-blue-600">Electromechanical Solutions</span>
             </h3>
             <p className="text-gray-600 leading-relaxed mb-8">
               IG Electromech Technical Services LLC is a UAE-based company

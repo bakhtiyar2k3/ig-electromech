@@ -31,7 +31,7 @@ export default function LoadingScreen({ onFinish }) {
       }`}
     >
       <div className="fixed inset-0 bg-gray-100/90 h-full w-full"></div>
-      <img src="/logoBG1.png" className="w-full h-full" alt="Background" />
+      <img src="/materialBg.png" className="w-full h-full" alt="Background" />
       <div
         className={`px-20 fixed inset-0 z-50 flex flex-col items-center justify-center transition-opacity duration-2500 ${
           stage === "fade" ? "opacity-0" : "opacity-100"

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import CountUp from "react-countup";
 import {
@@ -18,7 +17,6 @@ export default function WhyChooseUs() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
-  // Trigger when section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -26,7 +24,7 @@ export default function WhyChooseUs() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     const currentRef = sectionRef.current;
@@ -36,147 +34,193 @@ export default function WhyChooseUs() {
       if (currentRef) observer.unobserve(currentRef);
     };
   }, []);
-
   const values = [
     {
       title: "Quality",
       desc: "We never compromise on excellence, delivering services that meet international standards.",
       icon: <FaCheckCircle className="w-8 h-8" />,
+      gColor: "from-green-500 to-green-600",
+      bgColor: "bg-green-50",
+      textColor: "text-green-500",
     },
     {
       title: "Integrity",
       desc: "Honesty and transparency are the foundations of every project we undertake.",
       icon: <FaShieldAlt className="w-8 h-8" />,
+      gColor: "from-blue-500 to-blue-600",
+      bgColor: "bg-blue-50",
+      textColor: "text-blue-500",
     },
     {
       title: "Innovation",
       desc: "We embrace modern technologies and practices to deliver future-ready solutions.",
       icon: <FaLightbulb className="w-8 h-8" />,
+      gColor: "from-amber-500 to-amber-600",
+      bgColor: "bg-amber-50",
+      textColor: "text-amber-500",
     },
     {
       title: "Commitment",
       desc: "We honor our promises and deadlines, ensuring projects are delivered on time.",
       icon: <FaHandshake className="w-8 h-8" />,
+      gColor: "from-purple-500 to-purple-600",
+      bgColor: "bg-purple-50",
+      textColor: "text-purple-500",
     },
     {
       title: "Customer Focus",
       desc: "Our clients' success is our success — we build lasting partnerships across the UAE.",
       icon: <FaUsers className="w-8 h-8" />,
+      gColor: "from-cyan-500 to-cyan-600",
+      bgColor: "bg-cyan-50",
+      textColor: "text-cyan-500",
     },
   ];
-
-  const badges = [
-    { text: "Experienced & Certified Team", icon: <FaUserTie /> },
-    { text: "UAE-wide Presence", icon: <FaGlobe /> },
-    { text: "Energy-Efficient Solutions", icon: <FaBolt /> },
-    { text: "Reliable After-Sales Support", icon: <FaHeadset /> },
+  const stats = [
+    {
+      number: 10,
+      suffix: "+",
+      label: "Years Experience",
+      icon: <FaUserTie className="w-5 h-5" />,
+    },
+    {
+      number: 500,
+      suffix: "+",
+      label: "Projects Completed",
+      icon: <FaCheckCircle className="w-5 h-5" />,
+    },
+    {
+      number: 98,
+      suffix: "%",
+      label: "Client Satisfaction",
+      icon: <FaHandshake className="w-5 h-5" />,
+    },
+    {
+      number: 24,
+      suffix: "/7",
+      label: "Support Available",
+      icon: <FaHeadset className="w-5 h-5" />,
+    },
   ];
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-16 md:py-24 bg-gray-50 overflow-hidden"
+      className="relative w-full py-16 md:py-24 bg-gradient-to-br from-white to-gray-50 overflow-hidden"
     >
-      {/* Background */}
-      <div
-        className="absolute inset-0 bg-fixed bg-center bg-cover"
-        style={{ backgroundImage: "url('/whyChooseBg2.png')" }}
-      />
-      <div className="absolute inset-0 bg-[#ffffffce]" />
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-dot-pattern"></div>
 
-      <div className="px-6 lg:px-20 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
+        <div className="text-center mb-16 max-w-4xl mx-auto">
           <span className="text-xl font-bold text-blue-700 tracking-wider uppercase mb-4 block">
-            Our Values
+            Why Choose Us
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Why Choose IG Electromech?
+
+          <h2
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight transition-all duration-700 delay-200 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 -translate-y-4"
+            }`}
+          >
+            Building Trust Through{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              Excellence
+            </span>
           </h2>
-          <div className=" mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded"></div>
-          <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-700">
+
+          <p
+            className={`text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto transition-all duration-700 delay-300 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 -translate-y-4"
+            }`}
+          >
             We combine technical expertise with a client-first approach —
-            building trust through quality, transparency, and innovation across
-            the UAE.
+            delivering innovative solutions that drive success across the UAE
+            and beyond.
           </p>
         </div>
 
-        {/* Values Grid */}
-        <div className="flex flex-wrap justify-center gap-6 mb-16">
-          {values.map((value, idx) => (
-            <div
-              key={idx}
-              className={`group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 hover:border-blue-100 relative overflow-hidden
-        w-full sm:w-80 lg:w-80
-        ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              style={{ transitionDelay: `${idx * 100}ms` }}
-            >
-              <div className="w-14 h-14 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 mb-5">
-                {value.icon}
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
-                {value.title}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {value.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Trust Badges */}
+        {/* Values Grid - Masonry Layout */}
         <div
-          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-700 delay-500 ${
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 transition-all duration-700 delay-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          {badges.map((badge, idx) => (
+          {values.map((value, idx) => (
             <div
               key={idx}
-              className="flex items-center gap-3 p-5 bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 transition-all"
+              className={`group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 p-8 border border-gray-100 hover:border-transparent overflow-hidden
+                ${idx % 3 === 0 ? "md:col-span-1" : ""} 
+                ${idx % 3 === 1 ? "md:col-span-1" : ""}
+                ${idx % 3 === 2 ? "md:col-span-2 lg:col-span-1" : ""}`}
+              style={{ transitionDelay: `${idx * 100 + 500}ms` }}
             >
-              <div className="text-blue-600 text-xl">{badge.icon}</div>
-              <span className="text-gray-700 font-medium text-sm">
-                {badge.text}
-              </span>
+              {/* Background Gradient on Hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50 group-hover:opacity-0 transition-opacity duration-500"></div>
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
+              ></div>
+
+              <div className="relative z-100 bgblack">
+                <div
+                  className={`inline-flex p-3 rounded-xl mb-1 ${value.textColor} group-hover:scale-110 transition-transform duration-300`}
+                >
+                  {value.icon}
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-800 transition-colors">
+                  {value.title}
+                </h3>
+
+                <p className="text-gray-600 leading-relaxed">{value.desc}</p>
+
+                {/* Animated underline */}
+                <div
+                  className={`w-0 group-hover:w-12 h-0.5 bg-gradient-to-r ${value.color} mt-4 transition-all duration-300`}
+                ></div>
+              </div>
             </div>
           ))}
         </div>
 
         {/* Stats Section */}
         <div
-          className={`mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-white rounded-2xl shadow-sm border border-gray-100 transition-all duration-700 delay-700 ${
+          className={`grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 transition-all duration-700 delay-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-              {isVisible && <CountUp end={10} duration={1.5} />}+
+          {stats.map((stat, idx) => (
+            <div
+              key={idx}
+              className="group text-center bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 hover:border-blue-100"
+              style={{ transitionDelay: `${idx * 100 + 700}ms` }}
+            >
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-50 text-blue-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+                {stat.icon}
+              </div>
+
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                {isVisible && stat.suffix === "/7" ? (
+                  "24/7"
+                ) : (
+                  <CountUp
+                    end={stat.number}
+                    duration={2}
+                    delay={0.5}
+                    suffix={stat.suffix}
+                  />
+                )}
+              </div>
+
+              <div className="text-sm text-gray-600 font-medium">
+                {stat.label}
+              </div>
             </div>
-            <div className="text-sm text-gray-600">Years Experience</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-              {isVisible && <CountUp end={500} duration={1.5} />}+
-            </div>
-            <div className="text-sm text-gray-600">Projects Completed</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-              {isVisible && <CountUp end={98} duration={1.5} />}%
-            </div>
-            <div className="text-sm text-gray-600">Client Satisfaction</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-              24/7
-            </div>
-            <div className="text-sm text-gray-600">Support Available</div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

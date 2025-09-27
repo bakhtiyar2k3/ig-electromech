@@ -61,7 +61,7 @@ export default function Navbar() {
         pathname === "/"
           ? scrolled
             ? "bg-white py-2"
-            : "bg-gradient-to-r from-[#cdecf5] via-transparent to-transparent py-4"
+            : "bg-gradient-to-r from-[#c0e4ffb8] via-transparent to-transparent py-4"
           : "bg-white py-2 border-b border-black"
       }`}
       ref={menuRef}

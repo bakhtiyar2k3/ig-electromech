@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { MdKeyboardDoubleArrowDown } from "react-icons/md";
+import { useState, useEffect, useRef } from "react";
 
 const PLAYLIST = [
   { name: "serverroom", title: "Trusted ElectroMechanical Solutions" },
@@ -14,101 +13,138 @@ const PLAYLIST = [
   { name: "solarPanels", title: "Sustainable Engineering for Tomorrow" },
 ];
 
-const FADE_MS = 1000; // duration of crossfade in ms
-const LEAD_SEC = 0.5; // seconds before end to preload next
+const BackgroundVideo = () => {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const videoRef1 = useRef(null);
+  const videoRef2 = useRef(null);
+  const [activeVideoRef, setActiveVideoRef] = useState(videoRef1);
 
-export default function BackgroundVideo() {
-  const [activeLayer, setActiveLayer] = useState(0);
-  const [idx, setIdx] = useState(0);
+  // Handle video end event to move to next video
+  const handleVideoEnd = () => {
+    if (isTransitioning) return;
+    handleNextVideo();
+  };
 
-  const refs = [useRef(null), useRef(null)];
-  const switchingRef = useRef(false);
-
-  const getVideoSrc = (name) => `/videos/${name}.mp4`;
-
+  // Initialize first video
   useEffect(() => {
-    // initialize first video
-    refs[0].current.src = getVideoSrc(PLAYLIST[0].name);
-    refs[0].current.load();
-    refs[0].current.play().catch(() => {});
+    if (videoRef1.current && PLAYLIST.length > 0) {
+      videoRef1.current.src = `/videos/${PLAYLIST[0].name}.mp4`;
+      videoRef1.current.load();
+    }
   }, []);
 
-  useEffect(() => {
-    const current = refs[activeLayer].current;
-    if (!current) return;
+  const handleNextVideo = () => {
+    if (isTransitioning) return;
 
-    const nextLayer = (activeLayer + 1) % 2;
+    setIsTransitioning(true);
 
-    const startCrossfade = () => {
-      if (switchingRef.current) return;
-      switchingRef.current = true;
+    const nextIndex = (currentVideoIndex + 1) % PLAYLIST.length;
+    const inactiveRef = activeVideoRef === videoRef1 ? videoRef2 : videoRef1;
 
-      const nextIdx = (idx + 1) % PLAYLIST.length;
-      const nextEl = refs[nextLayer].current;
-      if (!nextEl) return;
+    // Preload and switch to next video
+    if (inactiveRef.current) {
+      inactiveRef.current.src = `/videos/${PLAYLIST[nextIndex].name}.mp4`;
+      inactiveRef.current.load();
 
-      // set next video
-      nextEl.src = getVideoSrc(PLAYLIST[nextIdx].name);
-      nextEl.load();
-      nextEl.play().catch(() => {});
+      const handleCanPlay = () => {
+        inactiveRef.current.play().catch(console.error);
 
-      // fade effect using opacity
-      setTimeout(() => {
-        setActiveLayer(nextLayer);
-        setIdx(nextIdx);
-        switchingRef.current = false;
-      }, FADE_MS);
-    };
+        setTimeout(() => {
+          setCurrentVideoIndex(nextIndex);
+          setActiveVideoRef(inactiveRef);
+          setIsTransitioning(false);
+        }, 600); // Match transition duration
 
-    const onTimeUpdate = () => {
-      const d = current.duration;
-      const t = current.currentTime || 0;
-      if (Number.isFinite(d) && d - t <= LEAD_SEC) {
-        startCrossfade();
-      }
-    };
+        inactiveRef.current.removeEventListener("canplay", handleCanPlay);
+      };
 
-    current.addEventListener("timeupdate", onTimeUpdate);
-    current.addEventListener("ended", startCrossfade);
-    current.addEventListener("error", startCrossfade);
+      inactiveRef.current.addEventListener("canplay", handleCanPlay);
+    }
+  };
 
-    return () => {
-      current.removeEventListener("timeupdate", onTimeUpdate);
-      current.removeEventListener("ended", startCrossfade);
-      current.removeEventListener("error", startCrossfade);
-    };
-  }, [activeLayer, idx]);
+
+  const handleVideoLoad = () => {
+    if (!isLoaded && videoRef1.current) {
+      setIsLoaded(true);
+      videoRef1.current.play().catch(console.error);
+    }
+  };
+
+  const handleVideoError = (e) => {
+    console.error("Video load error:", e);
+    // Try to continue to next video on error
+    if (isLoaded) {
+      setTimeout(() => handleNextVideo(), 1000);
+    }
+  };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black">
-      {[0, 1].map((i) => (
-        <video
-          key={i}
-          ref={refs[i]}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[${FADE_MS}ms] ${
-            activeLayer === i ? "opacity-100" : "opacity-0"
-          }`}
-          muted
-          playsInline
-        />
-      ))}
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Loading Screen */}
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-black flex items-center justify-center z-50">
+          <div className="text-center text-white">
+            <div className="w-12 h-12 border-3 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-lg font-medium">Loading Experience...</p>
+          </div>
+        </div>
+      )}
 
-      <div className="absolute inset-0 flex items-center justify-center px-4">
-        <div className="text-center max-w-6xl w-full">
-          <h1 className="px-4 text-4xl md:text-6xl font-bold uppercase tracking-wide text-white drop-shadow-2xl transition-opacity duration-1000">
-            {PLAYLIST[idx].title}
-            <div className="mt-3 mx-auto h-1 w-32 bg-gradient-to-r from-blue-500 to-red-700 rounded"></div>
+      {/* Video Elements */}
+      <video
+        ref={videoRef1}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+          activeVideoRef === videoRef1 ? "opacity-100 z-10" : "opacity-0 z-0"
+        }`}
+        muted
+        playsInline
+        preload="metadata"
+        onCanPlay={handleVideoLoad}
+        onError={handleVideoError}
+        onEnded={handleVideoEnd}
+      />
+
+      <video
+        ref={videoRef2}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+          activeVideoRef === videoRef2 ? "opacity-100 z-10" : "opacity-0 z-0"
+        }`}
+        muted
+        playsInline
+        preload="none"
+        onError={handleVideoError}
+        onEnded={handleVideoEnd}
+      />
+
+      {/* Overlay Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/80 z-20"></div>
+
+      {/* Content Overlay */}
+      <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
+        <div
+          className={`text-center text-white max-w-4xl px-6 transition-all duration-500 ease-in-out ${
+            isTransitioning
+              ? "opacity-70 -translate-y-2"
+              : "opacity-100 translate-y-0"
+          }`}
+        >
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
+            {PLAYLIST[currentVideoIndex]?.title}
           </h1>
-          <p className="mt-10 text-lg text-gray-200 opacity-90 font-bold tracking-wide">
-            Advanced ElectroMechanical Systems & Solutions
-          </p>
+
+          {/* Optional subtitle area */}
+          <div className="text-xl md:text-2xl font-light opacity-90 max-w-2xl mx-auto">
+            <div className="h-px bg-gradient-to-r from-transparent via-white/60 to-transparent mb-4"></div>
+            <p style={{ textShadow: "1px 1px 4px rgba(0, 0, 0, 0.8)" }}>
+              Advanced ElectroMechanical Systems & Solutions
+            </p>
+          </div>
         </div>
       </div>
-
-      <MdKeyboardDoubleArrowDown
-        size={45}
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce"
-      />
     </div>
   );
-}
+};
+
+export default BackgroundVideo;
