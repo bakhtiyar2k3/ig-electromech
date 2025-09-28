@@ -70,8 +70,9 @@ export default function Contact() {
           </h2>
           <div className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded"></div>
           <p className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-gray-700 px-4">
-            Have a project in mind? We&apos;d love to hear from you. Reach out to us
-            and let&apos;s discuss how we can help you build something amazing.
+            Have a project in mind? We&apos;d love to hear from you. Reach out
+            to us and let&apos;s discuss how we can help you build something
+            amazing.
           </p>
         </div>
 
@@ -216,43 +217,43 @@ export default function Contact() {
                   required
                 ></textarea>
               </div>
-             <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center">
-  {/* Send Message Button */}
-  <div className="w-full sm:w-auto">
-    <div className="p-[1px] bg-gradient-to-r from-red-500 to-blue-500 rounded-lg hover:from-blue-500 hover:to-red-500">
-      <button
-        type="submit"
-        className="w-full sm:w-auto bg-white text-gray-900 font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center group cursor-pointer whitespace-nowrap border border-gray-300 hover:border-gray-400 hover:bg-gray-50 min-w-[160px]"
-      >
-        <span className="text-sm">Send Message</span>
-        <Send className="w-5 h-5 ml-2 rotate-45 mt-1 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-      </button>
-    </div>
-  </div>
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center">
+                {/* Send Message Button */}
+                <div className="w-full sm:w-auto">
+                  <div className="p-[1px] bg-gradient-to-r from-red-500 to-blue-500 rounded-lg hover:from-blue-500 hover:to-red-500">
+                    <button
+                      type="submit"
+                      className="w-full sm:w-auto bg-white text-gray-900 font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center group cursor-pointer whitespace-nowrap border border-gray-300 hover:border-gray-400 hover:bg-gray-50 min-w-[160px]"
+                    >
+                      <span className="text-sm">Send Message</span>
+                      <Send className="w-5 h-5 ml-2 rotate-45 mt-1 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                    </button>
+                  </div>
+                </div>
 
-  {/* WhatsApp Button */}
-  <div className="w-full sm:w-auto">
-    <a
-      href="https://wa.me/971501234567"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-full sm:w-auto flex items-center justify-center gap-2 border border-green-400 text-green-700 bg-green-50 py-4 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-green-100 transition-all duration-300 group whitespace-nowrap min-w-[160px]"
-    >
-      <FaWhatsapp
-        size={24}
-        fill="#12da04"
-        className="flex-shrink-0"
-      />
-      <span className="font-bold text-sm text-green-600">
-        WhatsApp Us
-      </span>
-      <ChevronRight
-        color="#12da04"
-        className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0"
-      />
-    </a>
-  </div>
-</div>
+                {/* WhatsApp Button */}
+                <div className="w-full sm:w-auto">
+                  <a
+                    href="https://wa.me/971501234567"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 border border-green-400 text-green-700 bg-green-50 py-4 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-green-100 transition-all duration-300 group whitespace-nowrap min-w-[160px]"
+                  >
+                    <FaWhatsapp
+                      size={24}
+                      fill="#12da04"
+                      className="flex-shrink-0"
+                    />
+                    <span className="font-bold text-sm text-green-600">
+                      WhatsApp Us
+                    </span>
+                    <ChevronRight
+                      color="#12da04"
+                      className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0"
+                    />
+                  </a>
+                </div>
+              </div>
 
               <p className="text-center text-sm text-gray-500">
                 We&apos;ll get back to you within 24 hours

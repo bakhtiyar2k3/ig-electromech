@@ -1,10 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
-import { Send } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { FaLongArrowAltRight, FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -12,6 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
+
 
 const services = [
   {
@@ -51,7 +49,7 @@ const services = [
   },
   {
     category: "Mechanical & Installation",
-    slug: "mechanical",
+    slug: "mechanical-installation",
     img: "mechanical.jpg",
     items: [
       {
@@ -78,7 +76,7 @@ const services = [
   },
   {
     category: "Core HVAC Services",
-    slug: "core-hvac-services",
+    slug: "core-hvac",
     img: "hvac.jpg",
     items: [
       {
@@ -109,7 +107,7 @@ const services = [
   },
   {
     category: "Plumbing & Civil Support",
-    slug: "plumbing-civil-support",
+    slug: "plumbing-support",
     img: "plumbing.jpg",
     items: [
       {
@@ -132,7 +130,7 @@ const services = [
   },
   {
     category: "Maintenance & Specialized Services",
-    slug: "maintenance-specialized",
+    slug: "maintenance",
     img: "maintain.jpg",
     items: [
       {
@@ -155,181 +153,273 @@ const services = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function ServicesPage() {
   return (
-    <main className="bg-white pt-20">
-      {/* Hero Section */}
-      <section
-        className="relative text-center bg-fixed bg-center bg-cover text-white py-24"
-        style={{ backgroundImage: "url('/serviceBgMain.jpg')" }}
-      >
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/65 z-0"></div>
+    <main className="max-w-7xl mx-auto pt-20 relative">
+      <div className="min-h-screen bg-white">
+        {/* Hero Section */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="relative text-center bg-fixed bg-center bg-cover text-white py-16 md:py-24"
+          style={{ backgroundImage: "url('/serviceBgMain.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-black/65 z-0"></div>
 
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            What we can do for you
-          </h1>
-          <p className="text-xl max-w-3xl mx-auto text-gray-300">
-            Comprehensive electromechanical solutions tailored to residential,
-            commercial, and industrial projects.
-          </p>
-        </div>
-
-        {/* Breadcrumb */}
-        <div className="absolute bottom-0 left-5 px-12 py-4 z-10 text-left">
-          <nav className="text-sm md:text-base">
-            <span className="mr-2">You&apos;re here →</span>
-            <Link href="" className="hover:text-blue-400">
-              Home
-            </Link>
-            <span className="mx-1">/</span>
-            <span>Services</span>
-          </nav>
-        </div>
-      </section>
-
-      <section className="bg-white py-10 px-4 md:px-20 border-b-2 border-black">
-        <div className="relative container mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center py-5">
-          {/* Left Section */}
-          <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-red-500/20 blur-2xl"></div>
-          <div className="absolute -bottom-20 -left-30 w-40 h-40 rounded-full bg-blue-500/20 blur-2xl"></div>
-          <div>
-            <h2 className="text-5xl font-bold text-gray-800 mb-3">
-              Our Range of Services
-            </h2>
-            <p className="text-xl text-gray-600 ml-1">
-              From electrical automation to HVAC, plumbing, and specialized
-              maintenance, we deliver complete electromechanical solutions
-              tailored to residential, commercial, and industrial projects
-              across the UAE.
-            </p>
-          </div>
-
-          {/* Right Section */}
-          <div>
-            <ul className="space-y-4">
-              {services.map((service, idx) => (
-                <li key={idx} className="flex items-center gap-2">
-                  <FaLongArrowAltRight size={20} className="mr-3" />
-                  <span className="text-gray-600 text-xl">
-                    {service.category}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-      {/* Multiple Carousels Section */}
-      <section
-        className="relative py-10 px-4 md:px-20
-             bg-[url('/materialBg.png')] bg-fixed bg-center bg-cover"
-      >
-        {/* Soft white overlay so the pattern stays subtle */}
-        <div className="absolute inset-0 bg-white/90 pointer-events-none"></div>
-
-        {/* Content needs to be above the overlay */}
-        <div className="relative z-10">
-          {services.map((service, serviceIndex) => (
-            <div
-              key={serviceIndex}
-              className="max-w-7xl mx-auto border-b-2 pb-10 mb-10 border-black/50"
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <motion.h1
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
             >
-              {/* Service Category Header */}
+              What we can do for you
+            </motion.h1>
+            <motion.p
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto text-gray-300 px-4"
+            >
+              Comprehensive electromechanical solutions tailored to residential,
+              commercial, and industrial projects.
+            </motion.p>
+          </div>
+
+          {/* Breadcrumb */}
+          <motion.div
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="absolute bottom-0 left-0 sm:left-5 px-4 sm:px-12 py-4 z-10 text-left"
+          >
+            <nav className="text-xs sm:text-sm md:text-base">
+              <span className="mr-2 hidden sm:inline">You&apos;re here →</span>
+              <Link href="/" className="hover:text-blue-400 transition-colors">
+                Home
+              </Link>
+              <span className="mx-1">/</span>
+              <span>Services</span>
+            </nav>
+          </motion.div>
+        </motion.section>
+
+        {/* Overview Section */}
+        <section className="bg-white border-b-2 border-black">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="relative container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center py-10 sm:py-12 lg:py-16 px-4 sm:px-8 md:px-12 lg:px-20 border-3"
+          >
+            {/* Decorative Blurs */}
+            <div className="absolute top-0 right-0 w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-red-500/20 blur-2xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-blue-500/20 blur-2xl"></div>
+
+            {/* Left Section */}
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3">
+                Our Range of Services
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 ml-0 sm:ml-1">
+                From electrical automation to HVAC, plumbing, and specialized
+                maintenance, we deliver complete electromechanical solutions
+                tailored to residential, commercial, and industrial projects
+                across the UAE.
+              </p>
+            </motion.div>
+
+            {/* Right Section */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <ul className="space-y-3 sm:space-y-4">
+                {services.map((service, idx) => (
+                  <motion.li
+                    key={idx}
+                    variants={itemVariants}
+                    className="flex items-center gap-2 group cursor-pointer"
+                    whileHover={{ x: 10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <FaLongArrowAltRight
+                      size={20}
+                      className="mr-2 sm:mr-3 text-gray-600 group-hover:text-blue-500 transition-colors flex-shrink-0"
+                    />
+                    <Link href={`services/${service.slug}`}>
+                      <span className="text-gray-600 text-base sm:text-lg md:text-xl group-hover:text-gray-800 transition-colors">
+                        {service.category}
+                      </span>
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Multiple Carousels Section */}
+        <section className="relative py-10 sm:py-12 lg:py-16 px-4 sm:px-8 md:px-12 lg:px-20 bg-[url('/materialBg.png')] bg-fixed bg-center bg-cover">
+          <div className="absolute inset-0 bg-white/93 pointer-events-none"></div>
+
+          <div className="relative z-10">
+            {services.map((service, serviceIndex) => (
               <motion.div
-                className="mb-8 text-center"
-                initial={{ opacity: 0, y: 20 }}
+                key={serviceIndex}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: serviceIndex * 0.1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                className="flex flex-col max-w-7xl mx-auto border-b-2 pb-8 sm:pb-10 mb-8 sm:mb-10 border-black/20 last:border-b-0"
               >
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-                  {service.category}
-                </h2>
-              </motion.div>
+                {/* Service Category Header */}
+                <motion.div
+                  className="mb-6 sm:mb-8 text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true }}
+                >
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+                    {service.category}
+                  </h2>
+                </motion.div>
 
-              {/* Carousel Container with Fixed Background per category (text-only slides) */}
-              <div className="relative mx-auto">
-                <div className="relative h-[300px] md:h-[380px] w-[700px] overflow-hidden rounded-xl mx-auto">
-                  <Image
-                    src={`/serviceImgs/${service.img}`}
-                    alt={service.category}
-                    fill
-                    className="object-cover"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/10"></div>
+                {/* Carousel Container */}
+                <div className="relative mx-auto w-full">
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                    className="relative h-[280px] sm:h-[320px] md:h-[380px] w-full max-w-[90vw] sm:max-w-[600px] md:max-w-[700px] overflow-hidden rounded-xl mx-auto"
+                  >
+                    <Image
+                      src={`/serviceImgs/${service.img}`}
+                      alt={service.category}
+                      fill
+                      className="object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/10"></div>
 
-                  {/* Swiper for Text Content Only */}
-                  <div className="absolute inset-0 flex items-end">
-                    <Swiper
-                      modules={[Navigation, Autoplay]}
-                      spaceBetween={0}
-                      slidesPerView={1}
-                      navigation={{
-                        nextEl: `.custom-next-${serviceIndex}`,
-                        prevEl: `.custom-prev-${serviceIndex}`,
-                      }}
-                      pagination={false}
-                      autoplay={{
-                        delay: 3000,
-                        disableOnInteraction: false,
-                      }}
-                      loop={service.items.length > 1}
-                      className="w-full h-full"
-                    >
-                      {service.items.map((item, itemIndex) => (
-                        <SwiperSlide key={itemIndex}>
-                          <div className="h-full flex items-end">
-                            <motion.div
-                              className="p-10 md:px-20 text-white w-full"
-                              initial={{ opacity: 0, x: 50 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.5 }}
-                            >
-                              <h3 className="text-1xl sm:text-2xl md:text-3xl font-bold mb-3">
-                                {item.title}
-                              </h3>
-                              <p className="text-white/90 text-base md:text-md leading-relaxed">
-                                {item.desc}
-                              </p>
-
-                              <div className="mt-4 flex items-center gap-2">
-                                <span className="text-sm text-white/70">
-                                  {itemIndex + 1} of {service.items.length}
-                                </span>
-                              </div>
-                            </motion.div>
-                          </div>
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
-                  </div>
-
-                  {/* Arrows inside the carousel (fixed + layered) */}
-                  {service.items.length > 1 && (
-                    <>
-                      <button
-                        className={`custom-prev-${serviceIndex} absolute left-4 md:left-6 bottom-1/2 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
+                    {/* Swiper for Text Content */}
+                    <div className="absolute inset-0 flex items-end">
+                      <Swiper
+                        modules={[Navigation, Autoplay]}
+                        spaceBetween={0}
+                        slidesPerView={1}
+                        navigation={{
+                          nextEl: `.custom-next-${serviceIndex}`,
+                          prevEl: `.custom-prev-${serviceIndex}`,
+                        }}
+                        pagination={false}
+                        autoplay={{
+                          delay: 3000,
+                          disableOnInteraction: false,
+                        }}
+                        loop={service.items.length > 1}
+                        className="w-full h-full"
                       >
-                        <FaArrowLeft />
-                      </button>
-                      <button
-                        className={`custom-next-${serviceIndex} absolute right-4 md:right-6 bottom-1/2 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
-                      >
-                        <FaArrowRight />
-                      </button>
-                    </>
-                  )}
+                        {service.items.map((item, itemIndex) => (
+                          <SwiperSlide key={itemIndex}>
+                            <div className="h-full flex items-end">
+                              <motion.div
+                                className="p-6 sm:p-8 md:p-10 lg:px-20 text-white w-full"
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.5 }}
+                              >
+                                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3">
+                                  {item.title}
+                                </h3>
+                                <p className="text-white/90 text-sm sm:text-base md:text-lg leading-relaxed">
+                                  {item.desc}
+                                </p>
+
+                                <div className="mt-3 sm:mt-4 flex items-center gap-2">
+                                  <span className="text-xs sm:text-sm text-white/70">
+                                    {itemIndex + 1} of {service.items.length}
+                                  </span>
+                                </div>
+                              </motion.div>
+                            </div>
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
+                    </div>
+
+                    {/* Navigation Arrows */}
+                    {service.items.length > 1 && (
+                      <>
+                        <button
+                          className={`custom-prev-${serviceIndex} absolute left-2 sm:left-4 md:left-6 bottom-1/2 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
+                        >
+                          <FaArrowLeft className="text-sm sm:text-base" />
+                        </button>
+                        <button
+                          className={`custom-next-${serviceIndex} absolute right-2 sm:right-4 md:right-6 bottom-1/2 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
+                        >
+                          <FaArrowRight className="text-sm sm:text-base" />
+                        </button>
+                      </>
+                    )}
+                  </motion.div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      <Footer />
+                {/* Learn More Button */}
+                <motion.a
+                  href={`services/${service.slug}`}
+                  className="flex mx-auto gradient-border items-center text-black px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg relative overflow-hidden group mt-6 sm:mt-8 text-sm sm:text-base"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  <span className="relative z-10">Learn More</span>
+                  <FaArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2 mt-0.5 sm:mt-1 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                </motion.a>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        <Footer />
+      </div>
     </main>
   );
 }

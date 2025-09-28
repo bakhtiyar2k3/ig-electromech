@@ -17,14 +17,30 @@ const BackgroundVideo = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
   const videoRef1 = useRef(null);
   const videoRef2 = useRef(null);
   const [activeVideoRef, setActiveVideoRef] = useState(videoRef1);
 
-  // Handle video end event to move to next video
+  const timeoutRef = useRef(null);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (videoRef1.current) {
+        videoRef1.current.pause();
+        videoRef1.current.src = "";
+      }
+      if (videoRef2.current) {
+        videoRef2.current.pause();
+        videoRef2.current.src = "";
+      }
+    };
+  }, []);
+
   const handleVideoEnd = () => {
-    if (isTransitioning) return;
-    handleNextVideo();
+    if (!isTransitioning) handleNextVideo();
   };
 
   // Initialize first video
@@ -43,7 +59,6 @@ const BackgroundVideo = () => {
     const nextIndex = (currentVideoIndex + 1) % PLAYLIST.length;
     const inactiveRef = activeVideoRef === videoRef1 ? videoRef2 : videoRef1;
 
-    // Preload and switch to next video
     if (inactiveRef.current) {
       inactiveRef.current.src = `/videos/${PLAYLIST[nextIndex].name}.mp4`;
       inactiveRef.current.load();
@@ -51,16 +66,20 @@ const BackgroundVideo = () => {
       const handleCanPlay = () => {
         inactiveRef.current.play().catch(console.error);
 
-        setTimeout(() => {
+        timeoutRef.current = setTimeout(() => {
           setCurrentVideoIndex(nextIndex);
           setActiveVideoRef(inactiveRef);
           setIsTransitioning(false);
-        }, 600); // Match transition duration
+        }, 600);
 
         inactiveRef.current.removeEventListener("canplay", handleCanPlay);
       };
 
+      // Always clean up listener, even if video never plays
       inactiveRef.current.addEventListener("canplay", handleCanPlay);
+      setTimeout(() => {
+        inactiveRef.current?.removeEventListener("canplay", handleCanPlay);
+      }, 5000);
     }
   };
 
@@ -73,7 +92,6 @@ const BackgroundVideo = () => {
 
   const handleVideoError = (e) => {
     console.error("Video load error:", e);
-    // Try to continue to next video on error
     if (isLoaded) {
       setTimeout(() => handleNextVideo(), 1000);
     }
@@ -81,16 +99,6 @@ const BackgroundVideo = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Loading Screen */}
-      {/* {!isLoaded && (
-        <div className="absolute inset-0 bg-black flex items-center justify-center z-50">
-          <div className="text-center text-white">
-            <div className="w-12 h-12 border-3 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-lg font-medium">Loading Experience...</p>
-          </div>
-        </div>
-      )} */}
-
       {/* Video Elements */}
       <video
         ref={videoRef1}
@@ -133,7 +141,6 @@ const BackgroundVideo = () => {
             {PLAYLIST[currentVideoIndex]?.title}
           </h1>
 
-          {/* Optional subtitle area */}
           <div className="text-xl md:text-2xl font-light opacity-90 max-w-2xl mx-auto">
             <div className="h-px bg-gradient-to-r from-transparent via-white/60 to-transparent mb-4"></div>
             <p style={{ textShadow: "1px 1px 4px rgba(0, 0, 0, 0.8)" }}>

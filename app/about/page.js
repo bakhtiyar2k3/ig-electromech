@@ -45,7 +45,7 @@ export default function AboutPage() {
     <div className="relative bg-white pt-20 max-w-7xl mx-auto overflow-hidden">
       {/* Hero Section */}
       <AboutUs />
-      <section className="flex items-center py-30 bg-gradient-to-r from-gray-950 to-gray-900 text-white">
+      <section className="flex items-center py-30 bg-gradient-to-r from-white to-gray-50 text-black">
         <div className="grid md:grid-cols-2 gap-12 px-20 relative">
           {/* Divider Line */}
           <div className="hidden md:block absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-red-500 via-blue-500 to-transparent"></div>
@@ -60,11 +60,11 @@ export default function AboutPage() {
           >
             <div className="flex flex-col items-center mb-6 gap-5">
               <div className="p-4 bg-red-700 rounded-full flex items-center justify-center">
-                <PiBinocularsBold size={40} className="" />
+                <PiBinocularsBold size={40} className="text-white" />
               </div>
-              <h3 className="text-3xl font-bold">Our Vision</h3>
+              <h3 className="text-3xl font-bold">Our Vision</h3>  
             </div>
-            <p className="text-gray-300 text-lg leading-8 ">
+            <p className="text-gray-800 text-lg leading-8 ">
               To be a trusted leader in electromechanical technical services
               across the UAE, recognized for quality, innovation, and integrity.
             </p>
@@ -80,7 +80,7 @@ export default function AboutPage() {
           >
             <div className="flex flex-col items-center mb-6 gap-5">
               <div className="p-4 bg-indigo-800 rounded-full flex items-center justify-center">
-                <TbTargetArrow size={40} />
+                <TbTargetArrow size={40} className="text-white"/>
               </div>
               <h3 className="text-3xl font-bold">Our Mission</h3>
             </div>
@@ -92,7 +92,7 @@ export default function AboutPage() {
               ].map((item, idx) => (
                 <motion.li
                   key={idx}
-                  className="flex items-start"
+                  className="flex items-start text-gray-800"
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
@@ -111,8 +111,8 @@ export default function AboutPage() {
 
       {/* Core Values */}
       <section className="relative py-20 px-20 overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-red-200 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-blue-200 opacity-20 rounded-full animate-pulse"></div>
+        <div className="absolute top-0 -left-32 w-96 h-96 bg-red-200 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-0 -right-32 w-96 h-96 bg-blue-300 opacity-20 rounded-full blur-2xl"></div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -200,7 +200,6 @@ export default function AboutPage() {
         </motion.div>
       </section>
 
-      {/* CTA */}
       {/* CTA */}
       <section
         className="relative py-20 px-20 text-center bg-fixed bg-center bg-cover"
