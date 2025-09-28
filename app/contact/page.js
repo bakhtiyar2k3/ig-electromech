@@ -81,7 +81,7 @@ export default function ContactPage() {
           </h1>
           <div className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-5"></div>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-300">
-            Have a project in mind or just an enquiry? We'd love to hear from
+            Have a project in mind or just an enquiry? We&apos;d love to hear from
             you. Reach out to us and let&apos;s discuss how we can help you
             build something amazing.
           </p>

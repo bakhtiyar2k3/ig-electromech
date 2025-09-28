@@ -1,16 +1,16 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 
 const PLAYLIST = [
-  { name: "serverroom", title: "Trusted ElectroMechanical Solutions" },
-  { name: "circuitBoard", title: "Commitment to Quality" },
-  { name: "manTypes", title: "Reliable Technical Partnerships" },
+  { name: "circuitBoard", title: "Trusted Electromechanical Solutions" },
+  { name: "menPlan", title: "Planning Innovation" },
+  { name: "electrician", title: "Reliable Partnerships" },
   { name: "cables", title: "Where Technology meets Trust" },
-  { name: "serverLights", title: "Innovation You Can Depend On" },
+  { name: "pipes", title: "Innovation You Can Depend On" },
   { name: "windmill", title: "Solutions Built to Last" },
   { name: "volumeUp", title: "Driven By Integrity" },
   { name: "soldering", title: "Precision in Every Connection" },
-  { name: "solarPanels", title: "Sustainable Engineering for Tomorrow" },
 ];
 
 const BackgroundVideo = () => {
@@ -63,7 +63,6 @@ const BackgroundVideo = () => {
       inactiveRef.current.addEventListener("canplay", handleCanPlay);
     }
   };
-
 
   const handleVideoLoad = () => {
     if (!isLoaded && videoRef1.current) {
@@ -119,7 +118,7 @@ const BackgroundVideo = () => {
       />
 
       {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/80 z-20"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-black/50 z-20"></div>
 
       {/* Content Overlay */}
       <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
@@ -142,6 +141,10 @@ const BackgroundVideo = () => {
             </p>
           </div>
         </div>
+        <MdKeyboardDoubleArrowDown
+          className="absolute bottom-10 animate-bounce"
+          size={30}
+        />
       </div>
     </div>
   );

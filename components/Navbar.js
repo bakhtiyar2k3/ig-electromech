@@ -61,7 +61,7 @@ export default function Navbar() {
         pathname === "/"
           ? scrolled
             ? "bg-white py-2"
-            : "bg-gradient-to-r from-[#c0e4ffb8] via-transparent to-transparent py-4"
+            : "bg-gradient-tor from-[#c0e4ffb8] via-transparent to-transparent py-4"
           : "bg-white py-2 border-b border-black"
       }`}
       ref={menuRef}
@@ -164,9 +164,6 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <button className="mt-4 py-3 px-4 bg-blue-900 text-white font-semibold rounded-md hover:bg-blue-800 transition-all duration-300 cursor-pointer">
-            Get Quote
-          </button>
         </div>
       </div>
     </nav>

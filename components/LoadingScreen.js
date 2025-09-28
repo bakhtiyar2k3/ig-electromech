@@ -1,19 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SplittingText } from "@/components/ui/shadcn-io/splitting-text";
+import Image from "next/image";
 
 export default function LoadingScreen({ onFinish }) {
   const [stage, setStage] = useState("show"); // "show" | "fade" | "hidden"
 
   useEffect(() => {
-    // Logo fall duration (1.2s), then wait a moment, then fade out
-    const fallTimer = setTimeout(() => {
-      setStage("fade");
-    }, 2000);
-
+    const fallTimer = setTimeout(() => setStage("fade"), 2000);
     const fadeTimer = setTimeout(() => {
       setStage("hidden");
-      if (onFinish) onFinish();
+      onFinish?.();
     }, 3000);
 
     return () => {
@@ -26,29 +23,43 @@ export default function LoadingScreen({ onFinish }) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 transition-opacity duration-2500 ${
+      className={`fixed inset-0 z-[9999] overflow-hidden transition-opacity ease-out ${
         stage === "fade" ? "opacity-0" : "opacity-100"
       }`}
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
     >
-      <div className="fixed inset-0 bg-gray-100/90 h-full w-full"></div>
-      <img src="/materialBg.png" className="w-full h-full" alt="Background" />
-      <div
-        className={`px-20 fixed inset-0 z-50 flex flex-col items-center justify-center transition-opacity duration-2500 ${
-          stage === "fade" ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        <img
+      {/* Background + overlay */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/materialBg.png"
+          alt="Background pattern"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
+        {/* Keep the pattern subtle */}
+        <div className="absolute inset-0 bg-white/90" />
+      </div>
+
+      {/* Centered content */}
+      <div className=" h-full w-full flex flex-col justify-center items-center -mt-10">
+        <Image
           src="/logo.png"
           alt="Logo"
-          className="w-full animate-fall"
+          width={1200}
+          height={800}
+          priority
+          className="h-auto w-full max-w-[820px] sm:max-w-[620px] md:max-w-[720px] lg:max-w-[800px] select-none animate-fall"
         />
 
-        {/* Reveal text with SplittingText */}
-        <div className="ml-40 -mt-15">
+        <div className="text-center mt-10">
           <SplittingText
-            className="text-3xl tracking-tight font-semibold text-gray-700"
+            className="font-semibold text-gray-700 tracking-tight whitespace-nowrap leading-none text-[7vw] sm:text-[7vw] md:text-[6vw] lg:text-[5vw] xl:text-[4.5vw] text-center"
             text="Innovation for Generations"
-            type="words" // reveals smoothly left-to-right
+            type="words"
           />
         </div>
       </div>
