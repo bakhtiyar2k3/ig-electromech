@@ -82,7 +82,7 @@ export default function Navbar() {
                 IG Electromech
               </span>
               <span
-                className={`hidden sm:block text-xs md:text-sm font-bold -mt-1 whitespace-nowrap ${
+                className={`text-xs md:text-sm font-bold -mt-1 whitespace-nowrap ${
                   pathname === "/" && !scrolled ? "text-white" : "text-black"
                 }`}
               >
@@ -93,7 +93,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center">
+        <div className="hidden md:flex items-center">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -117,7 +117,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Hamburger */}
-        <div className="lg:hidden">
+        <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={`p-2 transition-colors cursor-pointer ${

@@ -33,34 +33,42 @@ export default function Services() {
     {
       title: "PLC & VFD Panels",
       image: "/serviceImgs/vfd_panels.jpg",
+      slug: "services/electrical-automation",
     },
     {
       title: "Electrical Systems",
       image: "/serviceImgs/electrical.jpg",
+      slug: "services/electrical-automation",
     },
     {
       title: "HVAC Systems",
       image: "/serviceImgs/hvac.jpg",
+      slug: "services/core-hvac",
     },
     {
       title: "Plumbing & Drainage",
       image: "/serviceImgs/plumbing.jpg",
+      slug: "services/plumbing-support",
     },
     {
       title: "Mechanical Works",
       image: "/serviceImgs/mechanical.jpg",
+      slug: "services/mechanical-installation",
     },
     {
       title: "Preventive Maintenance",
       image: "/serviceImgs/maintain.jpg",
+      slug: "services/maintenance",
     },
     {
       title: "Fibre Optic Splicing",
       image: "/serviceImgs/fibre_optic.jpg",
+      slug: "services/maintenance",
     },
     {
       title: "ELV & Security Systems",
       image: "/serviceImgs/security.jpg",
+      slug: "services/electrical-automation",
     },
   ];
 
@@ -85,7 +93,6 @@ export default function Services() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-         
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-4 md:mb-6">
             Our Specialized Services
           </h2>
@@ -100,7 +107,7 @@ export default function Services() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-center">
           {services.map((service, idx) => (
-            <Link href="/services" key={idx}>
+            <Link href={`${service.slug}`} key={idx}>
               <div className="p-2">
                 <div
                   className={`group relative rounded-md  overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform w-full h-40 sm:h-44 md:h-48 ${
