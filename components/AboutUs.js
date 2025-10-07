@@ -160,7 +160,7 @@ export default function AboutUs() {
             >
               <div className="inline-block p-[2px] rounded-lg bg-gradient-to-r from-red-500 to-blue-500 hover:from-blue-500 hover:to-red-500 ">
                 <Link
-                  href="/services"
+                  href="/about"
                   className="group inline-flex items-center px-5 py-2.5 md:px-6 md:py-3 bg-white text-black font-medium rounded-lg  transition-all duration-300 gap-2 text-sm md:text-base"
                 >
                   <span>Learn More About Us</span>

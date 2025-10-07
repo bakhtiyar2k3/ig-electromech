@@ -1,14 +1,13 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { LuMailQuestion } from "react-icons/lu";
 import Link from "next/link";
 import { IoSendOutline } from "react-icons/io5";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import { motion, AnimatePresence } from "framer-motion";
-
 import { PiSmileySadLight } from "react-icons/pi";
 
 const productsData = [
@@ -164,102 +163,209 @@ const productsData = [
   },
 ];
 
+// Debounce function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 export default function ProductsPage() {
   const [enquiryList, setEnquiryList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [brandFilters, setBrandFilters] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
 
-  // Load from localStorage
+  // Debounced search handler
+  const debouncedSearch = useMemo(
+    () => debounce((value) => setDebouncedSearchTerm(value), 300),
+    []
+  );
+
+  // Handle search input change
+  const handleSearchChange = useCallback((e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  }, [debouncedSearch]);
+
+  // Load from localStorage with error handling
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("enquiryList")) || [];
-    setEnquiryList(saved);
+    try {
+      const saved = localStorage.getItem("enquiryList");
+      if (saved) {
+        setEnquiryList(JSON.parse(saved));
+      }
+    } catch (error) {
+      console.error("Failed to load enquiry list:", error);
+      setEnquiryList([]);
+    }
+    
+    // Check for mobile and reduced motion preference
+    setIsMobile(window.innerWidth < 768);
+    setShouldReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    
+    // Set loading to false after initial load
+    setIsLoading(false);
+
+    // Handle window resize
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Save to localStorage with error handling
   useEffect(() => {
-    localStorage.setItem("enquiryList", JSON.stringify(enquiryList));
-  }, [enquiryList]);
-
-  const toggleEnquiry = (productName) => {
-    if (enquiryList.includes(productName)) {
-      setEnquiryList(enquiryList.filter((item) => item !== productName));
-    } else {
-      setEnquiryList([...enquiryList, productName]);
+    if (!isLoading) {
+      try {
+        localStorage.setItem("enquiryList", JSON.stringify(enquiryList));
+      } catch (error) {
+        console.error("Failed to save enquiry list:", error);
+      }
     }
-  };
+  }, [enquiryList, isLoading]);
 
-  // Collect all brands for filter menu
-  const allBrands = Array.from(
-    new Set(
-      productsData.flatMap((cat) => cat.items.flatMap((item) => item.brands))
-    )
-  ).sort();
-
-  const toggleBrandFilter = (brand) => {
-    if (brandFilters.includes(brand)) {
-      setBrandFilters(brandFilters.filter((b) => b !== brand));
-    } else {
-      setBrandFilters([...brandFilters, brand]);
+  // Handle escape key for filter menu
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isFilterOpen) {
+        setIsFilterOpen(false);
+      }
+    };
+    
+    if (isFilterOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
     }
-  };
+  }, [isFilterOpen]);
 
-  // Filter products based on search term and brand filters
-  const filteredProducts = productsData.map((category) => ({
-    ...category,
-    items: category.items.filter((item) => {
-      const matchesSearch =
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.brands.some((b) =>
-          b.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+  const toggleEnquiry = useCallback((productName) => {
+    setEnquiryList(prev => 
+      prev.includes(productName) 
+        ? prev.filter((item) => item !== productName)
+        : [...prev, productName]
+    );
+  }, []);
 
-      const matchesBrand =
-        brandFilters.length === 0 ||
-        item.brands.some((b) => brandFilters.includes(b));
+  // Memoize all brands
+  const allBrands = useMemo(() => 
+    Array.from(
+      new Set(
+        productsData.flatMap((cat) => cat.items.flatMap((item) => item.brands))
+      )
+    ).sort(),
+    []
+  );
 
-      return matchesSearch && matchesBrand;
-    }),
-  }));
+  const toggleBrandFilter = useCallback((brand) => {
+    setBrandFilters(prev =>
+      prev.includes(brand)
+        ? prev.filter((b) => b !== brand)
+        : [...prev, brand]
+    );
+  }, []);
 
-  const clearAllFilters = () => {
+  // Memoize filtered products
+  const filteredProducts = useMemo(() => {
+    const searchLower = debouncedSearchTerm.toLowerCase();
+    
+    return productsData.map((category) => ({
+      ...category,
+      items: category.items.filter((item) => {
+        const matchesSearch =
+          !searchLower ||
+          item.name.toLowerCase().includes(searchLower) ||
+          item.brands.some((b) =>
+            b.toLowerCase().includes(searchLower)
+          );
+
+        const matchesBrand =
+          brandFilters.length === 0 ||
+          item.brands.some((b) => brandFilters.includes(b));
+
+        return matchesSearch && matchesBrand;
+      }),
+    }));
+  }, [debouncedSearchTerm, brandFilters]);
+
+  const clearAllFilters = useCallback(() => {
     setBrandFilters([]);
     setSearchTerm("");
-  };
+    setDebouncedSearchTerm("");
+  }, []);
+
+  // Animation configurations based on user preferences
+  const getAnimationProps = useCallback((delay = 0) => {
+    if (shouldReduceMotion) {
+      return {
+        initial: false,
+        animate: true,
+        transition: { duration: 0 }
+      };
+    }
+    return {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { 
+        duration: isMobile ? 0.3 : 0.5, 
+        delay: isMobile ? 0 : delay 
+      }
+    };
+  }, [shouldReduceMotion, isMobile]);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto pt-20 relative">
         <section
-          className="relative text-center bg-fixed bg-center bg-cover text-white py-16 md:py-20 px-4"
+          className={`relative text-center ${isMobile ? 'bg-scroll' : 'bg-fixed'} bg-center bg-cover text-white py-16 md:py-20 px-4`}
           style={{ backgroundImage: "url('/serviceBgMain.jpg')" }}
         >
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/65 z-0"></div>
           <motion.div
             className="text-center mb-5 relative"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
+            {...getAnimationProps(0)}
           >
             <motion.h1
               className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              {...getAnimationProps(0.2)}
             >
               IG Electromech Product Catalog
             </motion.h1>
             <motion.div
               className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-5"
-              initial={{ width: 0 }}
+              initial={shouldReduceMotion ? false : { width: 0 }}
               animate={{ width: "8rem" }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.8, delay: shouldReduceMotion ? 0 : 0.4 }}
             ></motion.div>
             <motion.p
               className="text-lg md:text-xl max-w-3xl mx-auto text-gray-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              {...getAnimationProps(0.6)}
             >
               Professional electrical, mechanical, and HVAC products for
               industrial and commercial applications
@@ -270,16 +376,12 @@ export default function ProductsPage() {
         {/* Search & Filter Section */}
         <motion.div
           className="bg-white -xl shadow-sm border p-6"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
+          {...getAnimationProps(0.8)}
         >
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             <motion.div
               className="flex-1 w-full lg:max-w-md"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
+              {...getAnimationProps(0.9)}
             >
               <div className="relative">
                 <input
@@ -287,25 +389,27 @@ export default function ProductsPage() {
                   placeholder="Search products or brands..."
                   className="w-full p-3 pl-10 -lg border-b border-gray-900 focus:outline-none"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleSearchChange}
+                  aria-label="Search products"
                 />
-                <CiSearch className="absolute left-3 top-4 h-5 w-5 text-gray-600" />
+                <CiSearch className="absolute left-3 top-4 h-5 w-5 text-gray-600" aria-hidden="true" />
               </div>
             </motion.div>
 
             <motion.div
               className="flex flex-col sm:flex-row-reverse gap-3 w-full lg:w-auto"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 1 }}
+              {...getAnimationProps(1)}
             >
               {/* Brand Filter */}
               <div className="relative">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
                   className="cursor-pointer flex items-center gap-2 px-4 py-3 bg-white border border-gray-300 -lg hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center"
+                  aria-label="Filter products by brand"
+                  aria-expanded={isFilterOpen}
+                  aria-controls="brand-filter-menu"
                 >
-                  <CiFilter size={20} className="mt-1" />
+                  <CiFilter size={20} className="mt-1" aria-hidden="true" />
                   Brands ({brandFilters.length})
                 </button>
 
@@ -319,13 +423,16 @@ export default function ProductsPage() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
+                        aria-hidden="true"
                       ></motion.div>
                       <motion.div
+                        id="brand-filter-menu"
                         className="absolute right-0 mt-2 w-72 bg-white border border-gray-200  shadow-xl z-50 max-h-96 overflow-y-auto"
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
+                        role="menu"
                       >
                         <div className="p-4 border-b border-gray-200">
                           <div className="flex justify-between items-center">
@@ -336,22 +443,23 @@ export default function ProductsPage() {
                               <button
                                 onClick={clearAllFilters}
                                 className="text-sm text-red-600 hover:text-red-700"
+                                aria-label="Clear all filters"
                               >
                                 Clear all
                               </button>
                             )}
                           </div>
                         </div>
-                        <div className="p-4">
+                        <div className="p-4" role="group" aria-label="Brand filters">
                           {allBrands.map((brand, index) => (
                             <motion.label
                               key={brand}
                               className="flex items-center mb-3 cursor-pointer group"
-                              initial={{ opacity: 0, x: -10 }}
+                              initial={shouldReduceMotion ? false : { opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{
-                                duration: 0.2,
-                                delay: index * 0.03,
+                                duration: shouldReduceMotion ? 0 : 0.2,
+                                delay: shouldReduceMotion ? 0 : index * 0.03,
                               }}
                             >
                               <input
@@ -359,6 +467,7 @@ export default function ProductsPage() {
                                 className="w-4 h-4 text-blue-600 border-gray-300  focus:ring-blue-500"
                                 checked={brandFilters.includes(brand)}
                                 onChange={() => toggleBrandFilter(brand)}
+                                aria-label={`Filter by ${brand}`}
                               />
                               <span className="ml-3 text-gray-700 group-hover:text-gray-900">
                                 {brand}
@@ -379,6 +488,7 @@ export default function ProductsPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
+                  aria-label="Clear all filters"
                 >
                   Clear Filters
                 </motion.button>
@@ -395,6 +505,8 @@ export default function ProductsPage() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
+                role="region"
+                aria-label="Active filters"
               >
                 {brandFilters.map((brand) => (
                   <motion.span
@@ -410,6 +522,7 @@ export default function ProductsPage() {
                     <button
                       onClick={() => toggleBrandFilter(brand)}
                       className="hover:text-blue-900"
+                      aria-label={`Remove ${brand} filter`}
                     >
                       ×
                     </button>
@@ -427,18 +540,11 @@ export default function ProductsPage() {
               <motion.div
                 key={category.category}
                 className="bg-white shadow-sm border-t border-gray-900 overflow-hidden px-4"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
+                {...getAnimationProps(categoryIndex * 0.1)}
               >
                 <motion.div
                   className="p-6 pb-0"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: categoryIndex * 0.1 + 0.2,
-                  }}
+                  {...getAnimationProps(categoryIndex * 0.1 + 0.2)}
                 >
                   <h2 className="text-2xl font-semibold text-black">
                     {category.category}
@@ -447,14 +553,14 @@ export default function ProductsPage() {
                 <div className="p-6">
                   <motion.div
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                    initial="hidden"
+                    initial={shouldReduceMotion ? false : "hidden"}
                     animate="visible"
                     variants={{
                       hidden: { opacity: 0 },
                       visible: {
                         opacity: 1,
                         transition: {
-                          staggerChildren: 0.05,
+                          staggerChildren: shouldReduceMotion ? 0 : 0.05,
                         },
                       },
                     }}
@@ -469,21 +575,23 @@ export default function ProductsPage() {
                             hidden: { opacity: 0, y: 20 },
                             visible: { opacity: 1, y: 0 },
                           }}
-                          whileHover={{ y: -5 }}
+                          whileHover={shouldReduceMotion ? {} : { y: -5 }}
                           transition={{ duration: 0.3 }}
                         >
                           {/* Image */}
                           <motion.div
                             className="relative w-full mb-4"
                             style={{ paddingTop: "75%" }}
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
                             transition={{ duration: 0.3 }}
                           >
                             <Image
                               src={item.image}
-                              alt={item.name}
+                              alt={`${item.name} - ${item.brands.join(", ")}`}
                               fill
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                               style={{ objectFit: "contain" }}
+                              loading="lazy"
                               className="transition-transform duration-300"
                             />
                           </motion.div>
@@ -512,8 +620,10 @@ export default function ProductsPage() {
                                 ? "bg-red-100 text-red-700 hover:bg-red-200 border border-red-200"
                                 : "bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200"
                             }`}
-                            whileTap={{ scale: 0.95 }}
+                            whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
                             transition={{ duration: 0.1 }}
+                            aria-label={`${isAdded ? 'Remove' : 'Add'} ${item.name} ${isAdded ? 'from' : 'to'} enquiry`}
+                            aria-pressed={isAdded}
                           >
                             {isAdded ? "Remove from Enquiry" : "Add to Enquiry"}
                           </motion.button>
@@ -538,39 +648,35 @@ export default function ProductsPage() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
+              role="status"
+              aria-live="polite"
             >
               <motion.div
-                initial={{ rotate: 0 }}
-                animate={{ rotate: [0, -10, 10, -10, 0] }}
+                initial={shouldReduceMotion ? {} : { rotate: 0 }}
+                animate={shouldReduceMotion ? {} : { rotate: [0, -10, 10, -10, 0] }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <PiSmileySadLight className="mx-auto h-12 w-12 text-gray-800" />
+                <PiSmileySadLight className="mx-auto h-12 w-12 text-gray-800" aria-hidden="true" />
               </motion.div>
 
               <motion.h3
                 className="mt-4 text-lg font-medium text-gray-900"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 }}
+                {...getAnimationProps(0.3)}
               >
                 No products found
               </motion.h3>
               <motion.p
                 className="mt-2 text-gray-600"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
+                {...getAnimationProps(0.4)}
               >
                 Try adjusting your search or filter criteria
               </motion.p>
               <motion.button
                 onClick={clearAllFilters}
                 className="mt-4 px-6 py-2 text-black border border-black rounded-sm hover:bg-blue-700 transition-colors"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.5 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                {...getAnimationProps(0.5)}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
               >
                 Clear all filters
               </motion.button>
@@ -583,22 +689,23 @@ export default function ProductsPage() {
           {enquiryList.length > 0 && (
             <motion.div
               className="fixed bottom-6 right-6 z-50"
-              initial={{ opacity: 0, scale: 0, rotate: -180 }}
+              initial={{ opacity: 0, scale: 0, rotate: shouldReduceMotion ? 0 : -180 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0, rotate: 180 }}
+              exit={{ opacity: 0, scale: 0, rotate: shouldReduceMotion ? 0 : 180 }}
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
               <motion.div
                 className="p-[2px] bg-gradient-to-r from-red-500 to-blue-500 rounded-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
               >
                 <Link
                   href="/contact"
                   className="text-black bg-white px-6 py-3 rounded-md shadow-lg hover:shadow-xl flex items-center gap-3"
+                  aria-label={`Send enquiry for ${enquiryList.length} products`}
                 >
                   Enquire ({enquiryList.length})
-                  <IoSendOutline className="mt-1" />
+                  <IoSendOutline className="mt-1" aria-hidden="true" />
                 </Link>
               </motion.div>
             </motion.div>

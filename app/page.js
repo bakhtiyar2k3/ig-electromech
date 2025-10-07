@@ -16,7 +16,7 @@ export default function Home() {
     // Show video after a short delay to ensure proper rendering
     const timer = setTimeout(() => {
       setShowVideo(true);
-    }, 100);
+    }, 200);
 
     return () => clearTimeout(timer);
   }, []);

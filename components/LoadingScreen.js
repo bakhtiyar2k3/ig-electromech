@@ -23,7 +23,7 @@ export default function LoadingScreen({ onFinish }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] overflow-hidden transition-opacity ease-out ${
+      className={`fixed inset-0 z-[9999] overflow-hidden transition-opacity ease-out duration-800 ${
         stage === "fade" ? "opacity-0" : "opacity-100"
       }`}
       role="status"
