@@ -3,10 +3,8 @@
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { MdMailOutline, MdOutlineLocationOn } from "react-icons/md";
-import { LuPhone } from "react-icons/lu";
-import { GoGlobe } from "react-icons/go";
-import { Phone, Mail, MapPin, Send, Clock, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { IoSend } from "react-icons/io5";
 
 export default function ContactPage() {
@@ -19,7 +17,6 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load enquiryList from localStorage
   useEffect(() => {
     const storedList = JSON.parse(localStorage.getItem("enquiryList")) || [];
     setEnquiryList(storedList);
@@ -41,10 +38,8 @@ export default function ContactPage() {
 
     console.log("Form submitted:", payload);
 
-    // Simulate API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
-
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       alert("Your enquiry has been submitted successfully!");
       setForm({ name: "", email: "", phone: "", message: "" });
       localStorage.setItem("enquiryList", JSON.stringify([]));
@@ -69,111 +64,158 @@ export default function ContactPage() {
 
   return (
     <div className="bg-white pt-20 max-w-7xl mx-auto">
-      <section
+      {/* Hero Section */}
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
         className="relative text-center bg-fixed bg-center bg-cover text-white py-16 md:pt-24 px-4"
         style={{ backgroundImage: "url('/serviceBgMain.jpg')" }}
       >
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/65 z-0"></div>
-        <div className="text-center mb-5 relative">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-center mb-5 relative"
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
+          >
             Contact IG Electromech
-          </h1>
-          <div className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-5"></div>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-300">
-            Have a project in mind or just an enquiry? We&apos;d love to hear from
-            you. Reach out to us and let&apos;s discuss how we can help you
+          </motion.h1>
+
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: "8rem" }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-5"
+          ></motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="text-lg md:text-xl max-w-3xl mx-auto text-gray-300"
+          >
+            Have a project in mind or just an enquiry? We&apos;d love to hear
+            from you. Reach out to us and let&apos;s discuss how we can help you
             build something amazing.
-          </p>
-        </div>
-      </section>
-      
-      {/* Main Content Section */}
-      <div className="p-4 sm:p-6 lg:p-8">
+          </motion.p>
+        </motion.div>
+      </motion.section>
+
+      {/* Main Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="p-4 sm:p-6 lg:p-8"
+      >
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 py-15">
-          {/* Company Information */}
-          <div className="bg-gray-50 rounded-md shadow-xl border border-gray-400 py-10 p-4 md:p-6 space-y-6 lg:space-y-8 lg:w-1/3">
+          {/* Company Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="bg-gray-50 rounded-md shadow-xl border border-gray-400 py-10 p-4 md:p-6 space-y-6 lg:space-y-8 lg:w-1/3"
+          >
             <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-4 md:mb-6 pb-2 border-b border-gray-300">
               Company Details
             </h2>
 
-            {/* Call Us */}
-            <div className="flex space-x-3 md:space-x-4 lg:space-x-6">
-              <div className="w-10 h-10 md:w-12 md:h-12 flex mt-1 md:mt-2 items-center justify-center rounded-lg bg-red-100 text-red-500 flex-shrink-0">
-                <Phone className="w-5 h-5 md:w-6 md:h-6" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-base md:text-lg font-semibold text-gray-900">Call Us</h3>
-                <p className="text-gray-700 text-xs md:text-sm break-all">
-                  +971 50 123 4567
-                </p>
-                <p className="text-gray-700 text-xs md:text-sm break-all">
-                  +971 4 567 8901
-                </p>
-              </div>
-            </div>
+            {[
+              {
+                icon: <Phone className="w-5 h-5 md:w-6 md:h-6" />,
+                title: "Call Us",
+                color: "bg-red-100 text-red-500",
+                lines: ["+971 50 123 4567", "+971 4 567 8901"],
+              },
+              {
+                icon: <Mail className="w-5 h-5 md:w-6 md:h-6" />,
+                title: "Email Us",
+                color: "bg-blue-100 text-blue-500",
+                lines: ["hello@igelectromech.ae", "info@igelectromech.ae"],
+              },
+              {
+                icon: <MapPin className="w-5 h-5 md:w-6 md:h-6" />,
+                title: "Visit Us",
+                color: "bg-red-100 text-red-500",
+                lines: ["Dubai, United Arab Emirates"],
+              },
+              {
+                icon: <Clock className="w-5 h-5 md:w-6 md:h-6" />,
+                title: "Working Hours",
+                color: "bg-blue-100 text-blue-500",
+                lines: ["Mon - Fri: 8:00 AM - 6:00 PM", "Sat: 9:00 AM - 1:00 PM"],
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                viewport={{ once: true }}
+                className="flex space-x-3 md:space-x-4 lg:space-x-6"
+              >
+                <div
+                  className={`w-10 h-10 md:w-12 md:h-12 flex mt-1 md:mt-2 items-center justify-center rounded-lg ${item.color} flex-shrink-0`}
+                >
+                  {item.icon}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-base md:text-lg font-semibold text-gray-900">
+                    {item.title}
+                  </h3>
+                  {item.lines.map((line, idx) => (
+                    <p
+                      key={idx}
+                      className="text-gray-700 text-xs md:text-sm break-all"
+                    >
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
 
-            {/* Email Us */}
-            <div className="flex space-x-3 md:space-x-4 lg:space-x-6">
-              <div className="w-10 h-10 md:w-12 md:h-12 flex mt-1 md:mt-2 items-center justify-center rounded-lg bg-blue-100 text-blue-500 flex-shrink-0">
-                <Mail className="w-5 h-5 md:w-6 md:h-6" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-base md:text-lg font-semibold text-gray-900">
-                  Email Us
-                </h3>
-                <p className="text-gray-700 text-xs md:text-sm break-all">
-                  hello@igelectromech.ae
-                </p>
-                <p className="text-gray-700 text-xs md:text-sm break-all">
-                  info@igelectromech.ae
-                </p>
-              </div>
-            </div>
-
-            {/* Visit Us */}
-            <div className="flex space-x-3 md:space-x-4 lg:space-x-6">
-              <div className="w-10 h-10 md:w-12 md:h-12 flex mt-1 md:mt-2 items-center justify-center rounded-lg bg-red-100 text-red-500 flex-shrink-0">
-                <MapPin className="w-5 h-5 md:w-6 md:h-6" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-base md:text-lg font-semibold text-gray-900">
-                  Visit Us
-                </h3>
-                <p className="text-gray-700 text-xs md:text-sm">
-                  Dubai, United Arab Emirates
-                </p>
-              </div>
-            </div>
-
-            {/* Working Hours */}
-            <div className="flex space-x-3 md:space-x-4 lg:space-x-6">
-              <div className="w-10 h-10 md:w-12 md:h-12 flex mt-1 md:mt-2 items-center justify-center rounded-lg bg-blue-100 text-blue-500 flex-shrink-0">
-                <Clock className="w-5 h-5 md:w-6 md:h-6" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-base md:text-lg font-semibold text-gray-900">
-                  Working Hours
-                </h3>
-                <p className="text-gray-700 text-xs md:text-sm">
-                  Mon - Fri: 8:00 AM - 6:00 PM
-                </p>
-                <p className="text-gray-700 text-xs md:text-sm">Sat: 9:00 AM - 1:00 PM</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Combined Contact Form & Enquiry List */}
-          <div className="flex-1 bg-white rounded-md shadow-xl border border-gray-400 p-4 md:p-6">
+          {/* Contact Form & Enquiry */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="flex-1 bg-white rounded-md shadow-xl border border-gray-400 p-4 md:p-6"
+          >
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-              {/* Contact Form - Takes full width on mobile, 2/3 on desktop */}
-              <div className="lg:flex-1">
+              {/* Contact Form */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true }}
+                className="lg:flex-1"
+              >
                 <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 pb-2 border-b border-gray-200 text-gray-700">
                   Send Message/Enquiry
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                  >
                     <div>
                       <label
                         htmlFor="name"
@@ -211,9 +253,14 @@ export default function ContactPage() {
                         required
                       />
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
                     <label
                       htmlFor="phone"
                       className="block text-sm font-bold text-gray-600 mb-1"
@@ -229,9 +276,14 @@ export default function ContactPage() {
                       placeholder="+971 XX XXX XXXX"
                       className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2"
                     />
-                  </div>
+                  </motion.div>
 
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
                     <label
                       htmlFor="message"
                       className="block text-sm font-bold text-gray-600 mb-1"
@@ -248,9 +300,11 @@ export default function ContactPage() {
                       className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2"
                       required
                     ></textarea>
-                  </div>
+                  </motion.div>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     type="submit"
                     disabled={isSubmitting}
                     className="gradient-border text-black py-3 px-4 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed group w-full md:w-auto"
@@ -287,13 +341,19 @@ export default function ContactPage() {
                         />
                       </div>
                     )}
-                  </button>
+                  </motion.button>
                 </form>
-              </div>
+              </motion.div>
 
-              {/* Enquiry List - Takes full width on mobile, 1/3 on desktop when not empty */}
+              {/* Enquiry List */}
               {enquiryList.length > 0 && (
-                <div className="lg:w-1/3">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                  className="lg:w-1/3"
+                >
                   <div className="border border-gray-200 rounded-lg">
                     <div className="flex justify-between items-center p-3 md:p-4 border-b border-gray-200 bg-gray-50 rounded-t-md">
                       <h3 className="font-semibold text-sm">
@@ -307,10 +367,27 @@ export default function ContactPage() {
                       </button>
                     </div>
                     <div className="max-h-60 overflow-y-auto">
-                      <div className="p-2">
+                      <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        variants={{
+                          hidden: { opacity: 0 },
+                          visible: {
+                            opacity: 1,
+                            transition: {
+                              staggerChildren: 0.1,
+                            },
+                          },
+                        }}
+                        viewport={{ once: true }}
+                        className="p-2"
+                      >
                         {enquiryList.map((item, index) => (
-                          <div
+                          <motion.div
                             key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: index * 0.1 }}
                             className="flex items-center justify-between p-2 rounded-lg group hover:bg-gray-50 transition-colors"
                           >
                             <span className="text-gray-700 text-xs font-medium flex-1 truncate">
@@ -335,17 +412,17 @@ export default function ContactPage() {
                                 />
                               </svg>
                             </button>
-                          </div>
+                          </motion.div>
                         ))}
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       <Footer />
     </div>

@@ -81,7 +81,7 @@ export default function AboutUs() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#1cd43e] relative py-16 md:py-24 bg-gradient-to-br from-gray-50 to-white overflow-hidden px-6 lg:px-15"
+      className="bg-[#f7d562] relative py-16 md:py-24 bg-gradient-to-br from-gray-50 to-white overflow-hidden px-6 lg:px-15"
     >
       {/* Animated Background Pattern */}
       <div className="absolute inset-0 opacity-5">
@@ -102,7 +102,7 @@ export default function AboutUs() {
           <div className="mt-2 md:mt-3 mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded"></div>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
-            Leading the UAE's electromechanical industry with innovative
+            Leading the UAE&apos;s electromechanical industry with innovative
             solutions and unmatched expertise
           </p>
         </div>
@@ -127,7 +127,7 @@ export default function AboutUs() {
 
             <p className="text-gray-600 leading-relaxed">
               IG Electromech Technical Services LLC stands as a cornerstone in
-              the UAE's electromechanical industry. We blend cutting-edge
+              the UAE&apos;s electromechanical industry. We blend cutting-edge
               technology with decades of expertise to deliver solutions that
               exceed expectations.
             </p>

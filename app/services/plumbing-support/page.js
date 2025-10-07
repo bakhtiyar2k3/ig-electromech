@@ -333,39 +333,48 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
+
       <section
-        className="relative py-16 sm:py-20 px-4 sm:px-10 md:px-20 text-center bg-fixed bg-center bg-cover"
-        style={{ backgroundImage: "url('/handshake.jpg')" }}
+        className="relative py-14 sm:py-20 md:py-24 px-4 sm:px-10 text-center bg-fixed bg-center bg-cover overflow-hidden"
+        style={{
+          backgroundImage: "url('/handshake.jpg')",
+        }}
       >
-        <div className="absolute inset-0 bg-black/60"></div>
+        {/* Dark overlay with gradient for better text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="relative max-w-3xl mx-auto px-4 sm:px-6"
+          className="relative max-w-2xl sm:max-w-3xl mx-auto px-2 sm:px-6"
         >
+          {/* Title */}
           <motion.h3
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-white"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-white leading-snug sm:leading-tight"
           >
             Ready to <span className="text-blue-500">Power Your Project</span>?
           </motion.h3>
+
+          {/* Paragraph */}
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-gray-200 mb-6 sm:mb-8 text-base sm:text-lg"
+            className="text-gray-200 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg leading-relaxed px-2"
           >
             Partner with IG Electromech for innovative electromechanical
-            solutions that deliver exceptional results, on time and within
+            solutions that deliver exceptional results — on time and within
             budget.
           </motion.p>
+
+          {/* Button */}
           <motion.a
             href="/contact"
             className="inline-block gradient-border text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg relative overflow-hidden group text-sm sm:text-base"
@@ -376,15 +385,17 @@ export default function ServicesPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            <span className="relative z-10">Start a Conversation</span>
+            {" "}
+            <span className="relative z-10">Start a Conversation</span>{" "}
           </motion.a>
 
+          {/* Subtext */}
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
             viewport={{ once: true }}
-            className="mt-4 sm:mt-6 text-gray-200 text-xs sm:text-sm"
+            className="mt-4 sm:mt-6 text-gray-300 text-xs sm:text-sm"
           >
             We respond to all inquiries within 24 hours
           </motion.p>
@@ -395,4 +406,3 @@ export default function ServicesPage() {
     </main>
   );
 }
-

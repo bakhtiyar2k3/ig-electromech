@@ -35,6 +35,29 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const socialLinks = [
+    { Icon: Facebook, href: "https://facebook.com" },
+    { Icon: Instagram, href: "https://instagram.com" },
+    { Icon: Linkedin, href: "https://linkedin.com" },
+    { Icon: MessageCircle, href: "https://wa.me/971501234567" },
+  ];
+
+  const quickLinks = [
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Services", href: "/services" },
+    { name: "Products", href: "/products" },
+    { name: "Contact", href: "/contact" },
+  ];
+
+  const serviceLinks = [
+    { name: "Electrical & Automation", href: "/services/electrical-automation" },
+    { name: "Mechanical & Installation", href: "/services/mechanical-installation" },
+    { name: "Core HVAC Services", href: "/services/core-hvac" },
+    { name: "Plumbing & Civil Support", href: "/services/plumbing-support" },
+    { name: "Maintenance Services", href: "/services/maintenance" },
+  ];
+
   return (
     <footer className="bg-gray-50 text-gray-700 pt-16 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Decorative line + blobs */}
@@ -66,7 +89,6 @@ export default function Footer() {
                 <span className="text-xs md:text-sm font-medium text-gray-700">
                   Technical Services L.L.C
                 </span>
-                
               </div>
             </div>
             <p className="text-gray-600 mb-6 max-w-md leading-relaxed text-sm md:text-base">
@@ -93,14 +115,16 @@ export default function Footer() {
 
             {/* Social Links */}
             <div className="flex space-x-3">
-              {[Facebook, Instagram, Linkedin, MessageCircle].map((Icon, i) => (
-                <a
+              {socialLinks.map(({ Icon, href }, i) => (
+                <Link
                   key={i}
-                  href="#"
-                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 hover:bg-blue-600 hover:border-blue-600 transition-all duration-300 group shadow-sm"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 hover:bg-blue-600 hover:border-blue-600 transition-all duration-300 group shadow-sm cursor-pointer"
                 >
                   <Icon className="w-4 h-4 text-gray-600 group-hover:text-white" />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -111,20 +135,18 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {["Home", "About", "Services", "Projects", "Contact"].map(
-                (item, index) => (
-                  <li key={item}>
-                    <Link
-                      href={`#${item.toLowerCase()}`}
-                      className="flex items-center text-gray-600 hover:text-blue-600 transition"
-                      style={{ transitionDelay: `${index * 50}ms` }}
-                    >
-                      <ChevronRight className="w-3 h-3 mr-2" />
-                      <span className="text-sm">{item}</span>
-                    </Link>
-                  </li>
-                )
-              )}
+              {quickLinks.map((item, index) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="flex items-center text-gray-600 hover:text-blue-600 transition cursor-pointer"
+                    style={{ transitionDelay: `${index * 50}ms` }}
+                  >
+                    <ChevronRight className="w-3 h-3 mr-2" />
+                    <span className="text-sm">{item.name}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -134,25 +156,28 @@ export default function Footer() {
               Our Services
             </h3>
             <ul className="space-y-3">
-              {[
-                "PLC & VFD Panels",
-                "Electrical Systems",
-                "HVAC Solutions",
-                "Plumbing & Drainage",
-                "Mechanical Works",
-                "View All Services",
-              ].map((service, index) => (
-                <li key={service}>
+              {serviceLinks.map((service, index) => (
+                <li key={service.name}>
                   <Link
-                    href="#services"
-                    className="flex items-center text-gray-600 hover:text-blue-600 transition"
+                    href={service.href}
+                    className="flex items-center text-gray-600 hover:text-blue-600 transition cursor-pointer"
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
                     <ChevronRight className="w-3 h-3 mr-2" />
-                    <span className="text-xs md:text-sm">{service}</span>
+                    <span className="text-xs md:text-sm">{service.name}</span>
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/services"
+                  className="flex items-center text-gray-600 hover:text-blue-600 transition cursor-pointer font-semibold"
+                  style={{ transitionDelay: `${serviceLinks.length * 50}ms` }}
+                >
+                  <ChevronRight className="w-3 h-3 mr-2" />
+                  <span className="text-xs md:text-sm">View All Services</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -167,9 +192,12 @@ export default function Footer() {
                   <Phone className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-gray-900 text-sm md:text-base">
+                  <Link 
+                    href="tel:+971501234567"
+                    className="text-gray-900 text-sm md:text-base hover:text-blue-600 transition cursor-pointer"
+                  >
                     +971 50 123 4567
-                  </p>
+                  </Link>
                   <p className="text-xs text-gray-500 mt-1">
                     Mon-Fri, 8:00 AM-6:00 PM
                   </p>
@@ -180,9 +208,12 @@ export default function Footer() {
                   <Mail className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-gray-900 text-sm md:text-base">
+                  <Link 
+                    href="mailto:info@igelectromech.ae"
+                    className="text-gray-900 text-sm md:text-base hover:text-blue-600 transition cursor-pointer"
+                  >
                     info@igelectromech.ae
-                  </p>
+                  </Link>
                   <p className="text-xs text-gray-500 mt-1">
                     We respond within 24 hours
                   </p>
@@ -221,7 +252,7 @@ export default function Footer() {
             className="flex items-center text-gray-700 transition order-1 md:order-3 mb-4 md:mb-0 group cursor-pointer"
             aria-label="Scroll to top"
           >
-            <span className="text-xs mr-2 group-hover:text-blue-600">
+            <span className="text-xs mr-2 group-hover:text-blue-600 cursor-pointer">
               Back to top
             </span>
             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-200 cursor-pointer hover:bg-blue-600 hover:border-blue-600 hover:text-white duration-300 shadow-sm">

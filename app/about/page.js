@@ -30,7 +30,7 @@ export default function AboutPage() {
       <AboutUs />
 
       {/* Vision & Mission Section */}
-      <section className="py-16 md:py-24 bg-gray-50">
+      <section className="py-10 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
             {/* Vision */}
@@ -48,8 +48,9 @@ export default function AboutPage() {
                 Our Vision
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                To be the most trusted electromechanical services provider in the UAE, 
-                setting industry standards for quality, innovation, and reliability.
+                To be the most trusted electromechanical services provider in
+                the UAE, setting industry standards for quality, innovation, and
+                reliability.
               </p>
             </motion.div>
 
@@ -85,7 +86,7 @@ export default function AboutPage() {
       </section>
 
       {/* Core Values Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-10 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
@@ -94,7 +95,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
               Our Core Values
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -156,45 +157,15 @@ export default function AboutPage() {
                 className="group"
               >
                 <div className="h-full p-6 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300">
-                  <div className={`inline-flex p-3 ${value.bgColor} rounded-lg mb-4`}>
+                  <div
+                    className={`inline-flex p-3 ${value.bgColor} rounded-lg mb-4`}
+                  >
                     <value.icon className={`w-6 h-6 ${value.iconColor}`} />
                   </div>
                   <h4 className="text-xl font-semibold text-gray-900 mb-2">
                     {value.title}
                   </h4>
-                  <p className="text-gray-600">
-                    {value.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Statistics Section */}
-      <section className="py-16 bg-blue-600">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { number: "10+", label: "Years of Experience" },
-              { number: "500+", label: "Projects Completed" },
-              { number: "50+", label: "Expert Engineers" },
-              { number: "100%", label: "Client Satisfaction" },
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="text-white"
-              >
-                <div className="text-3xl md:text-4xl font-bold mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-sm md:text-base text-blue-100">
-                  {stat.label}
+                  <p className="text-gray-600">{value.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -203,46 +174,72 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
+     <section
+        className="relative py-14 sm:py-20 md:py-24 px-4 sm:px-10 text-center bg-fixed bg-center bg-cover overflow-hidden"
+        style={{
+          backgroundImage: "url('/handshake.jpg')",
+        }}
+      >
+        {/* Dark overlay with gradient for better text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="relative max-w-2xl sm:max-w-3xl mx-auto px-2 sm:px-6"
+        >
+          {/* Title */}
+          <motion.h3
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-white leading-snug sm:leading-tight"
+          >
+            Ready to <span className="text-blue-500">Power Your Project</span>?
+          </motion.h3>
+
+          {/* Paragraph */}
+          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
+            className="text-gray-200 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg leading-relaxed px-2"
           >
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Ready to Start Your Project?
-            </h3>
-            <p className="text-lg text-gray-600 mb-8">
-              Partner with IG Electromech for reliable electromechanical solutions 
-              that exceed expectations.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href="/contact"
-                className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Get Started
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </motion.a>
-              <motion.a
-                href="/services"
-                className="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                View Services
-              </motion.a>
-            </div>
-            <p className="mt-6 text-sm text-gray-500">
-              We respond to all inquiries within 24 hours
-            </p>
-          </motion.div>
-        </div>
+            Partner with IG Electromech for innovative electromechanical
+            solutions that deliver exceptional results — on time and within
+            budget.
+          </motion.p>
+
+          {/* Button */}
+          <motion.a
+            href="/contact"
+            className="inline-block gradient-border text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg relative overflow-hidden group text-sm sm:text-base"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            {" "}
+            <span className="relative z-10">Start a Conversation</span>{" "}
+          </motion.a>
+
+          {/* Subtext */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-4 sm:mt-6 text-gray-300 text-xs sm:text-sm"
+          >
+            We respond to all inquiries within 24 hours
+          </motion.p>
+        </motion.div>
       </section>
 
       <Footer />

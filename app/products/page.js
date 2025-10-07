@@ -7,6 +7,8 @@ import { LuMailQuestion } from "react-icons/lu";
 import Link from "next/link";
 import { IoSendOutline } from "react-icons/io5";
 import { CiFilter, CiSearch } from "react-icons/ci";
+import { motion, AnimatePresence } from "framer-motion";
+
 import { PiSmileySadLight } from "react-icons/pi";
 
 const productsData = [
@@ -233,22 +235,52 @@ export default function ProductsPage() {
         >
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/65 z-0"></div>
-          <div className="text-center mb-5 relative">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <motion.div
+            className="text-center mb-5 relative"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <motion.h1
+              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               IG Electromech Product Catalog
-            </h1>
-            <div className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-5"></div>
-            <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-300">
+            </motion.h1>
+            <motion.div
+              className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-5"
+              initial={{ width: 0 }}
+              animate={{ width: "8rem" }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            ></motion.div>
+            <motion.p
+              className="text-lg md:text-xl max-w-3xl mx-auto text-gray-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
               Professional electrical, mechanical, and HVAC products for
               industrial and commercial applications
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </section>
 
         {/* Search & Filter Section */}
-        <div className="bg-white -xl shadow-sm border p-6">
+        <motion.div
+          className="bg-white -xl shadow-sm border p-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+        >
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            <div className="flex-1 w-full lg:max-w-md">
+            <motion.div
+              className="flex-1 w-full lg:max-w-md"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+            >
               <div className="relative">
                 <input
                   type="text"
@@ -259,9 +291,14 @@ export default function ProductsPage() {
                 />
                 <CiSearch className="absolute left-3 top-4 h-5 w-5 text-gray-600" />
               </div>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col sm:flex-row-reverse gap-3 w-full lg:w-auto">
+            <motion.div
+              className="flex flex-col sm:flex-row-reverse gap-3 w-full lg:w-auto"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 1 }}
+            >
               {/* Brand Filter */}
               <div className="relative">
                 <button
@@ -272,109 +309,175 @@ export default function ProductsPage() {
                   Brands ({brandFilters.length})
                 </button>
 
-                {isFilterOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-40"
-                      onClick={() => setIsFilterOpen(false)}
-                    ></div>
-                    <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200  shadow-xl z-50 max-h-96 overflow-y-auto">
-                      <div className="p-4 border-b border-gray-200">
-                        <div className="flex justify-between items-center">
-                          <h3 className="font-semibold text-gray-900">
-                            Filter by Brand
-                          </h3>
-                          {brandFilters.length > 0 && (
-                            <button
-                              onClick={clearAllFilters}
-                              className="text-sm text-red-600 hover:text-red-700"
-                            >
-                              Clear all
-                            </button>
-                          )}
+                <AnimatePresence>
+                  {isFilterOpen && (
+                    <>
+                      <motion.div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsFilterOpen(false)}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                      ></motion.div>
+                      <motion.div
+                        className="absolute right-0 mt-2 w-72 bg-white border border-gray-200  shadow-xl z-50 max-h-96 overflow-y-auto"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div className="p-4 border-b border-gray-200">
+                          <div className="flex justify-between items-center">
+                            <h3 className="font-semibold text-gray-900">
+                              Filter by Brand
+                            </h3>
+                            {brandFilters.length > 0 && (
+                              <button
+                                onClick={clearAllFilters}
+                                className="text-sm text-red-600 hover:text-red-700"
+                              >
+                                Clear all
+                              </button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div className="p-4">
-                        {allBrands.map((brand) => (
-                          <label
-                            key={brand}
-                            className="flex items-center mb-3 cursor-pointer group"
-                          >
-                            <input
-                              type="checkbox"
-                              className="w-4 h-4 text-blue-600 border-gray-300  focus:ring-blue-500"
-                              checked={brandFilters.includes(brand)}
-                              onChange={() => toggleBrandFilter(brand)}
-                            />
-                            <span className="ml-3 text-gray-700 group-hover:text-gray-900">
-                              {brand}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
+                        <div className="p-4">
+                          {allBrands.map((brand, index) => (
+                            <motion.label
+                              key={brand}
+                              className="flex items-center mb-3 cursor-pointer group"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{
+                                duration: 0.2,
+                                delay: index * 0.03,
+                              }}
+                            >
+                              <input
+                                type="checkbox"
+                                className="w-4 h-4 text-blue-600 border-gray-300  focus:ring-blue-500"
+                                checked={brandFilters.includes(brand)}
+                                onChange={() => toggleBrandFilter(brand)}
+                              />
+                              <span className="ml-3 text-gray-700 group-hover:text-gray-900">
+                                {brand}
+                              </span>
+                            </motion.label>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
 
               {brandFilters.length > 0 && (
-                <button
+                <motion.button
                   onClick={clearAllFilters}
                   className="px-4 py-3 text-red-600 border border-red-200 -lg hover:bg-red-50 transition-colors w-full sm:w-auto"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
                 >
                   Clear Filters
-                </button>
+                </motion.button>
               )}
-            </div>
+            </motion.div>
           </div>
 
           {/* Active filters display */}
-          {brandFilters.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              {brandFilters.map((brand) => (
-                <span
-                  key={brand}
-                  className="inline-flex items-center gap-1 px-3 py-1 -full bg-blue-50 text-blue-700 text-sm rounded-md border border-blue-500"
-                >
-                  {brand}
-                  <button
-                    onClick={() => toggleBrandFilter(brand)}
-                    className="hover:text-blue-900"
+          <AnimatePresence>
+            {brandFilters.length > 0 && (
+              <motion.div
+                className="mt-4 flex flex-wrap gap-2"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {brandFilters.map((brand) => (
+                  <motion.span
+                    key={brand}
+                    className="inline-flex items-center gap-1 px-3 py-1 -full bg-blue-50 text-blue-700 text-sm rounded-md border border-blue-500"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
+                    layout
                   >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+                    {brand}
+                    <button
+                      onClick={() => toggleBrandFilter(brand)}
+                      className="hover:text-blue-900"
+                    >
+                      ×
+                    </button>
+                  </motion.span>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Products Grid */}
         <div className="space-y-12 pb-15 ">
-          {filteredProducts.map((category) =>
+          {filteredProducts.map((category, categoryIndex) =>
             category.items.length > 0 ? (
-              <div
+              <motion.div
                 key={category.category}
                 className="bg-white shadow-sm border-t border-gray-900 overflow-hidden px-4"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
               >
-                <div className="p-6 pb-0">
+                <motion.div
+                  className="p-6 pb-0"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: categoryIndex * 0.1 + 0.2,
+                  }}
+                >
                   <h2 className="text-2xl font-semibold text-black">
                     {category.category}
                   </h2>
-                </div>
+                </motion.div>
                 <div className="p-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <motion.div
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: {
+                          staggerChildren: 0.05,
+                        },
+                      },
+                    }}
+                  >
                     {category.items.map((item) => {
                       const isAdded = enquiryList.includes(item.name);
                       return (
-                        <div
+                        <motion.div
                           key={item.name}
                           className="bg-gray-50 rounded-md border border-gray-400 p-4 hover:shadow-md transition-shadow group flex flex-col"
+                          variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0 },
+                          }}
+                          whileHover={{ y: -5 }}
+                          transition={{ duration: 0.3 }}
                         >
                           {/* Image */}
-                          <div
+                          <motion.div
                             className="relative w-full mb-4"
                             style={{ paddingTop: "75%" }}
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
                           >
                             <Image
                               src={item.image}
@@ -383,7 +486,7 @@ export default function ProductsPage() {
                               style={{ objectFit: "contain" }}
                               className="transition-transform duration-300"
                             />
-                          </div>
+                          </motion.div>
 
                           {/* Content (title + brands) */}
                           <div className="flex-1">
@@ -402,60 +505,105 @@ export default function ProductsPage() {
                           </div>
 
                           {/* Button */}
-                          <button
+                          <motion.button
                             onClick={() => toggleEnquiry(item.name)}
                             className={`py-2 w-fit px-6 rounded-md font-medium transition-colors cursor-pointer text-sm ${
                               isAdded
                                 ? "bg-red-100 text-red-700 hover:bg-red-200 border border-red-200"
                                 : "bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200"
                             }`}
+                            whileTap={{ scale: 0.95 }}
+                            transition={{ duration: 0.1 }}
                           >
                             {isAdded ? "Remove from Enquiry" : "Add to Enquiry"}
-                          </button>
-                        </div>
+                          </motion.button>
+                        </motion.div>
                       );
                     })}
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             ) : null
           )}
         </div>
 
         {/* No Results Message */}
-        {filteredProducts.every((category) => category.items.length === 0) && (
-          <div className="text-center py-12">
-            <PiSmileySadLight className="mx-auto h-12 w-12 text-gray-800" />
-
-            <h3 className="mt-4 text-lg font-medium text-gray-900">
-              No products found
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Try adjusting your search or filter criteria
-            </p>
-            <button
-              onClick={clearAllFilters}
-              className="mt-4 px-6 py-2 text-black border border-black rounded-sm hover:bg-blue-700 transition-colors"
+        <AnimatePresence>
+          {filteredProducts.every(
+            (category) => category.items.length === 0
+          ) && (
+            <motion.div
+              className="text-center py-12"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
             >
-              Clear all filters
-            </button>
-          </div>
-        )}
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: [0, -10, 10, -10, 0] }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <PiSmileySadLight className="mx-auto h-12 w-12 text-gray-800" />
+              </motion.div>
+
+              <motion.h3
+                className="mt-4 text-lg font-medium text-gray-900"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+              >
+                No products found
+              </motion.h3>
+              <motion.p
+                className="mt-2 text-gray-600"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+              >
+                Try adjusting your search or filter criteria
+              </motion.p>
+              <motion.button
+                onClick={clearAllFilters}
+                className="mt-4 px-6 py-2 text-black border border-black rounded-sm hover:bg-blue-700 transition-colors"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Clear all filters
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Floating Enquire Button */}
-        {enquiryList.length > 0 && (
-          <div className="fixed bottom-6 right-6 z-50">
-            <div className="p-[2px] bg-gradient-to-r from-red-500 to-blue-500 rounded-lg">
-              <Link
-                href="/contact"
-                className="text-black bg-white px-6 py-3 rounded-md shadow-lg hover:shadow-xl flex items-center gap-3"
+        <AnimatePresence>
+          {enquiryList.length > 0 && (
+            <motion.div
+              className="fixed bottom-6 right-6 z-50"
+              initial={{ opacity: 0, scale: 0, rotate: -180 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0, rotate: 180 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            >
+              <motion.div
+                className="p-[2px] bg-gradient-to-r from-red-500 to-blue-500 rounded-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Enquire ({enquiryList.length})
-                <IoSendOutline className="mt-1" />
-              </Link>
-            </div>
-          </div>
-        )}
+                <Link
+                  href="/contact"
+                  className="text-black bg-white px-6 py-3 rounded-md shadow-lg hover:shadow-xl flex items-center gap-3"
+                >
+                  Enquire ({enquiryList.length})
+                  <IoSendOutline className="mt-1" />
+                </Link>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <Footer />
       </div>
     </div>
