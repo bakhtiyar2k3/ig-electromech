@@ -10,7 +10,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
 
-
 const services = [
   {
     category: "Electrical & Automation",
@@ -369,7 +368,7 @@ export default function ServicesPage() {
                                   {item.desc}
                                 </p>
 
-                                <div className="mt-3 sm:mt-4 flex items-center gap-2">
+                                <div className="mt-3 sm:mt-4 flex items-center gap-2 justify-center">
                                   <span className="text-xs sm:text-sm text-white/70">
                                     {itemIndex + 1} of {service.items.length}
                                   </span>
@@ -385,12 +384,12 @@ export default function ServicesPage() {
                     {service.items.length > 1 && (
                       <>
                         <button
-                          className={`custom-prev-${serviceIndex} absolute left-2 sm:left-4 md:left-6 bottom-1/2 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
+                          className={`custom-prev-${serviceIndex} absolute left-2 sm:left-4 md:left-6 bottom-1/9 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
                         >
                           <FaArrowLeft className="text-sm sm:text-base" />
                         </button>
                         <button
-                          className={`custom-next-${serviceIndex} absolute right-2 sm:right-4 md:right-6 bottom-1/2 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
+                          className={`custom-next-${serviceIndex} absolute right-2 sm:right-4 md:right-6 bottom-1/9 transform translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 p-2 sm:p-3 rounded-full text-white shadow-lg z-10 transition-all cursor-pointer`}
                         >
                           <FaArrowRight className="text-sm sm:text-base" />
                         </button>

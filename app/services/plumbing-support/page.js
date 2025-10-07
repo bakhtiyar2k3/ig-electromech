@@ -162,11 +162,17 @@ export default function ServicesPage() {
         >
           <nav className="text-xs sm:text-sm md:text-base">
             <span className="mr-2 hidden sm:inline">You&apos;re here →</span>
-            <Link href="/" className="hover:text-blue-400 transition-colors duration-300">
+            <Link
+              href="/"
+              className="hover:text-blue-400 transition-colors duration-300"
+            >
               Home
             </Link>
             <span className="mx-1">/</span>
-            <Link href="/services" className="hover:text-blue-400 transition-colors duration-300">
+            <Link
+              href="/services"
+              className="hover:text-blue-400 transition-colors duration-300"
+            >
               Services
             </Link>
             <span className="mx-1">/</span>
@@ -176,7 +182,7 @@ export default function ServicesPage() {
       </motion.section>
 
       {/* Services Overview */}
-      <section className="py-12 sm:py-16 bg-gray-50">
+      <section className="py-12 sm:py-16 border-y-2 border-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -285,7 +291,9 @@ export default function ServicesPage() {
                           viewport={{ once: true }}
                           className="flex items-start"
                         >
-                          <span className="text-blue-500 mr-2 flex-shrink-0">•</span>
+                          <span className="text-blue-500 mr-2 flex-shrink-0">
+                            •
+                          </span>
                           <span>{feature}</span>
                         </motion.li>
                       ))}
@@ -387,3 +395,4 @@ export default function ServicesPage() {
     </main>
   );
 }
+

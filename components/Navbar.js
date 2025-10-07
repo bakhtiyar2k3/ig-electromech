@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // 👈 import this
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +11,7 @@ export default function Navbar() {
   const [showNavbar, setShowNavbar] = useState(true);
   const lastScrollY = useRef(0);
   const menuRef = useRef(null);
-  const pathname = usePathname(); // 👈 current route
+  const pathname = usePathname();
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -60,30 +60,30 @@ export default function Navbar() {
       } ${
         pathname === "/"
           ? scrolled
-            ? "bg-white py-2"
-            : "bg-gradient-tor from-[#c0e4ffb8] via-transparent to-transparent py-4"
-          : "bg-white py-2 border-b border-black"
+            ? "bg-white py-2 shadow-md"
+            : "py-4"
+          : "bg-white py-2 border-b border-gray-200 shadow-sm"
       }`}
       ref={menuRef}
     >
-      <div className="px-6 sm:px-8 flex items-center justify-between">
+      <div className="px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-3">
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3">
             <Image
               src="/logoCut.png"
               alt="Logo"
               width={70}
               height={70}
-              className="object-contain"
+              className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-[70px] lg:h-[70px] object-contain"
             />
             <div className="flex flex-col">
-              <span className="text-3xl font-bold text-[#01347a] tracking-tight">
+              <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#01347a] tracking-tight whitespace-nowrap">
                 IG Electromech
               </span>
               <span
-                className={`text-sm font-bold -mt-1 text-black ${
-                  pathname === "/" && !scrolled ? "textwhite" : "text-black"
+                className={`hidden sm:block text-xs md:text-sm font-bold -mt-1 whitespace-nowrap ${
+                  pathname === "/" && !scrolled ? "text-white" : "text-black"
                 }`}
               >
                 Technical Services L.L.C
@@ -95,7 +95,7 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center">
           {navItems.map((item) => {
-            const isActive = pathname === item.href; // 👈 check active link
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
@@ -127,12 +127,12 @@ export default function Navbar() {
           >
             {isOpen ? (
               <X
-                size={28}
+                size={24}
                 className="transform rotate-180 transition-transform duration-300"
               />
             ) : (
               <Menu
-                size={28}
+                size={24}
                 className="transform rotate-0 transition-transform duration-300"
               />
             )}
@@ -142,21 +142,21 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 w-full bg-gray-900/95 backdrop-blur-md overflow-hidden transition-all duration-500 ${
+        className={`lg:hidden absolute top-full left-0 w-full bg-white border-t border-gray-200 shadow-lg overflow-hidden transition-all duration-500 ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="flex flex-col space-y-2 p-6">
+        <div className="flex flex-col py-4">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`py-3 px-4 font-medium rounded-md transition-all duration-300 cursor-pointer ${
+                className={`py-3 px-6 font-medium transition-all duration-300 cursor-pointer ${
                   isActive
-                    ? "bg-blue-900 text-white"
-                    : "text-white hover:bg-gray-800 hover:text-blue-900"
+                    ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
                 }`}
                 onClick={() => setIsOpen(false)}
               >

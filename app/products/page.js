@@ -227,17 +227,6 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto pt-20 relative">
-        {/* Header */}
-        {/* <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            IG Electromech Product Catalog
-          </h1>
-          <div className="w-30 h-1 rounded-2xl bg-gradient-to-r from-blue-600 to-red-600 mx-auto mb-6"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Professional electrical, mechanical, and HVAC solutions for
-            industrial and commercial applications
-          </p>
-        </div> */}
         <section
           className="relative text-center bg-fixed bg-center bg-cover text-white py-16 md:py-20 px-4"
           style={{ backgroundImage: "url('/serviceBgMain.jpg')" }}
@@ -250,7 +239,7 @@ export default function ProductsPage() {
             </h1>
             <div className="mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-5"></div>
             <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-300">
-              Professional electrical, mechanical, and HVAC solutions for
+              Professional electrical, mechanical, and HVAC products for
               industrial and commercial applications
             </p>
           </div>
@@ -272,12 +261,12 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+            <div className="flex flex-col sm:flex-row-reverse gap-3 w-full lg:w-auto">
               {/* Brand Filter */}
               <div className="relative">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="flex items-center gap-2 px-4 py-3 bg-white border border-gray-300 -lg hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center"
+                  className="cursor-pointer flex items-center gap-2 px-4 py-3 bg-white border border-gray-300 -lg hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center"
                 >
                   <CiFilter size={20} className="mt-1" />
                   Brands ({brandFilters.length})
@@ -289,7 +278,7 @@ export default function ProductsPage() {
                       className="fixed inset-0 z-40"
                       onClick={() => setIsFilterOpen(false)}
                     ></div>
-                    <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 -lg shadow-xl z-50 max-h-96 overflow-y-auto">
+                    <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200  shadow-xl z-50 max-h-96 overflow-y-auto">
                       <div className="p-4 border-b border-gray-200">
                         <div className="flex justify-between items-center">
                           <h3 className="font-semibold text-gray-900">
@@ -345,7 +334,7 @@ export default function ProductsPage() {
               {brandFilters.map((brand) => (
                 <span
                   key={brand}
-                  className="inline-flex items-center gap-1 px-3 py-1 -full bg-blue-50 text-blue-700 text-sm"
+                  className="inline-flex items-center gap-1 px-3 py-1 -full bg-blue-50 text-blue-700 text-sm rounded-md border border-blue-500"
                 >
                   {brand}
                   <button
@@ -366,9 +355,9 @@ export default function ProductsPage() {
             category.items.length > 0 ? (
               <div
                 key={category.category}
-                className="bg-white -xl shadow-sm border border-gray-200 overflow-hidden pt-5 px-4"
+                className="bg-white shadow-sm border-t border-gray-900 overflow-hidden px-4"
               >
-                <div className="bg-gradient=-to-r from-blue-900 via-transparent to-red-500 px-6 py-4">
+                <div className="p-6 pb-0">
                   <h2 className="text-2xl font-semibold text-black">
                     {category.category}
                   </h2>
@@ -406,7 +395,7 @@ export default function ProductsPage() {
                               <p className="text-sm text-gray-600 mb-1">
                                 Brands:
                               </p>
-                              <p className="text-sm text-gray-800 font-medium">
+                              <p className="text-sm text-gray-800 font-medium ">
                                 {item.brands.join(", ")}
                               </p>
                             </div>
@@ -415,13 +404,13 @@ export default function ProductsPage() {
                           {/* Button */}
                           <button
                             onClick={() => toggleEnquiry(item.name)}
-                            className={`py-2 w-fit px-6 rounded-md font-medium transition-colors text-sm ${
+                            className={`py-2 w-fit px-6 rounded-md font-medium transition-colors cursor-pointer text-sm ${
                               isAdded
                                 ? "bg-red-100 text-red-700 hover:bg-red-200 border border-red-200"
                                 : "bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200"
                             }`}
                           >
-                            {isAdded ? "Remove from Enquiry" : "Add Enquiry"}
+                            {isAdded ? "Remove from Enquiry" : "Add to Enquiry"}
                           </button>
                         </div>
                       );
@@ -459,7 +448,7 @@ export default function ProductsPage() {
             <div className="p-[2px] bg-gradient-to-r from-red-500 to-blue-500 rounded-lg">
               <Link
                 href="/contact"
-                className="text-black bg-white px-6 py-3 rounded-md shadow-lg hover:shadow-xl transition-all transform hover:scale-110 flex items-center gap-3"
+                className="text-black bg-white px-6 py-3 rounded-md shadow-lg hover:shadow-xl flex items-center gap-3"
               >
                 Enquire ({enquiryList.length})
                 <IoSendOutline className="mt-1" />

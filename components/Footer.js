@@ -218,7 +218,7 @@ export default function Footer() {
 
           <button
             onClick={scrollToTop}
-            className="flex items-center text-gray-700 transition order-1 md:order-3 mb-4 md:mb-0 group"
+            className="flex items-center text-gray-700 transition order-1 md:order-3 mb-4 md:mb-0 group cursor-pointer"
             aria-label="Scroll to top"
           >
             <span className="text-xs mr-2 group-hover:text-blue-600">

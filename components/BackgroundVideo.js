@@ -141,7 +141,7 @@ const BackgroundVideo = () => {
             {PLAYLIST[currentVideoIndex]?.title}
           </h1>
 
-          <div className="text-xl md:text-2xl font-light opacity-90 max-w-2xl mx-auto">
+          <div className="text-xl md:text-xl font-light opacity-90 max-w-2xl mx-auto">
             <div className="h-px bg-gradient-to-r from-transparent via-white/60 to-transparent mb-4"></div>
             <p style={{ textShadow: "1px 1px 4px rgba(0, 0, 0, 0.8)" }}>
               Advanced ElectroMechanical Systems & Solutions

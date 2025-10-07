@@ -1,16 +1,16 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import CountUp from "react-countup";
 import {
   FaCheckCircle,
   FaShieldAlt,
   FaLightbulb,
   FaHandshake,
   FaUsers,
-  FaUserTie,
-  FaGlobe,
-  FaBolt,
-  FaHeadset,
+  FaClock,
+  FaThumbsUp,
+  FaChartLine,
+  FaAward,
+  FaProjectDiagram,
 } from "react-icons/fa";
 
 export default function WhyChooseUs() {
@@ -34,191 +34,179 @@ export default function WhyChooseUs() {
       if (currentRef) observer.unobserve(currentRef);
     };
   }, []);
-  const values = [
+
+  const reasons = [
     {
-      title: "Quality",
-      desc: "We never compromise on excellence, delivering services that meet international standards.",
-      icon: <FaCheckCircle className="w-8 h-8" />,
-      gColor: "from-green-500 to-green-600",
-      bgColor: "bg-green-50",
-      textColor: "text-green-500",
+      icon: FaCheckCircle,
+      title: "Proven Excellence",
+      description:
+        "10+ years delivering quality electromechanical solutions across UAE",
     },
     {
-      title: "Integrity",
-      desc: "Honesty and transparency are the foundations of every project we undertake.",
-      icon: <FaShieldAlt className="w-8 h-8" />,
-      gColor: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
-      textColor: "text-blue-500",
+      icon: FaUsers,
+      title: "Expert Team",
+      description: "Certified professionals with extensive industry experience",
     },
     {
-      title: "Innovation",
-      desc: "We embrace modern technologies and practices to deliver future-ready solutions.",
-      icon: <FaLightbulb className="w-8 h-8" />,
-      gColor: "from-amber-500 to-amber-600",
-      bgColor: "bg-amber-50",
-      textColor: "text-amber-500",
+      icon: FaClock,
+      title: "On-Time Delivery",
+      description: "We honor deadlines and keep projects on schedule",
     },
     {
-      title: "Commitment",
-      desc: "We honor our promises and deadlines, ensuring projects are delivered on time.",
-      icon: <FaHandshake className="w-8 h-8" />,
-      gColor: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
-      textColor: "text-purple-500",
+      icon: FaShieldAlt,
+      title: "Quality Assured",
+      description: "International standards compliance in every project",
     },
     {
-      title: "Customer Focus",
-      desc: "Our clients' success is our success — we build lasting partnerships across the UAE.",
-      icon: <FaUsers className="w-8 h-8" />,
-      gColor: "from-cyan-500 to-cyan-600",
-      bgColor: "bg-cyan-50",
-      textColor: "text-cyan-500",
+      icon: FaLightbulb,
+      title: "Innovative Solutions",
+      description: "Modern technologies for efficient, future-ready systems",
+    },
+    {
+      icon: FaThumbsUp,
+      title: "Client Satisfaction",
+      description: "100% commitment to exceeding client expectations",
     },
   ];
+
   const stats = [
+    { number: "10+", label: "Years Experience", icon: FaAward },
+    { number: "500+", label: "Projects Completed", icon: FaProjectDiagram },
+    { number: "50+", label: "Expert Team", icon: FaUsers },
+    { number: "100%", label: "Client Satisfaction", icon: FaHandshake },
+  ];
+  const differentiators = [
     {
-      number: 10,
-      suffix: "+",
-      label: "Years Experience",
-      icon: <FaUserTie className="w-5 h-5" />,
+      icon: FaHandshake,
+      title: "Partnership Approach",
+      points: [
+        "Transparent communication at every stage",
+        "Flexible solutions tailored to your needs",
+        "Long-term support and maintenance",
+      ],
     },
     {
-      number: 500,
-      suffix: "+",
-      label: "Projects Completed",
-      icon: <FaCheckCircle className="w-5 h-5" />,
-    },
-    {
-      number: 98,
-      suffix: "%",
-      label: "Client Satisfaction",
-      icon: <FaHandshake className="w-5 h-5" />,
-    },
-    {
-      number: 24,
-      suffix: "/7",
-      label: "Support Available",
-      icon: <FaHeadset className="w-5 h-5" />,
+      icon: FaChartLine,
+      title: "Proven Track Record",
+      points: [
+        "Successfully completed major UAE projects",
+        "Consistent quality across all services",
+        "Strong client retention and referrals",
+      ],
     },
   ];
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full py-16 md:py-24 bg-gradient-to-br from-white to-gray-50 overflow-hidden"
-    >
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-dot-pattern"></div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16 max-w-4xl mx-auto">
-          <span className="text-xl font-bold text-blue-700 tracking-wider uppercase mb-4 block">
-            Why Choose Us
-          </span>
-
+        <div className="text-center mb-12 md:mb-16">
           <h2
-            className={`text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight transition-all duration-700 delay-200 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 transition-all duration-700 ${
               isVisible
                 ? "opacity-100 translate-y-0"
-                : "opacity-0 -translate-y-4"
+                : "opacity-0 translate-y-4"
             }`}
           >
-            Building Trust Through{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              Excellence
-            </span>
+            Why Choose <span className="text-blue-600">IG Electromech</span>
           </h2>
+          <div className="mt-2 md:mt-3 mx-auto h-1 w-24 md:w-32 bg-gradient-to-r from-blue-500 to-red-500 rounded mb-4"></div>
 
           <p
-            className={`text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto transition-all duration-700 delay-300 ${
+            className={`text-lg text-gray-600 max-w-2xl mx-auto transition-all duration-700 delay-200 ${
               isVisible
                 ? "opacity-100 translate-y-0"
-                : "opacity-0 -translate-y-4"
+                : "opacity-0 translate-y-4"
             }`}
           >
-            We combine technical expertise with a client-first approach —
-            delivering innovative solutions that drive success across the UAE
-            and beyond.
+            Your trusted partner for comprehensive electromechanical solutions
+            in the UAE
           </p>
         </div>
 
-        {/* Values Grid - Masonry Layout */}
+        {/* Main Reasons Grid */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 transition-all duration-700 delay-500 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          className={`grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 transition-all duration-700 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          {values.map((value, idx) => (
+          {reasons.map((reason, index) => (
             <div
-              key={idx}
-              className={`group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 p-8 border border-gray-100 hover:border-transparent overflow-hidden
-                ${idx % 3 === 0 ? "md:col-span-1" : ""} 
-                ${idx % 3 === 1 ? "md:col-span-1" : ""}
-                ${idx % 3 === 2 ? "md:col-span-2 lg:col-span-1" : ""}`}
-              style={{ transitionDelay: `${idx * 100 + 500}ms` }}
+              key={index}
+              className="group bg-gray-50 rounded-lg p-6 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-200"
             >
-              {/* Background Gradient on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50 group-hover:opacity-0 transition-opacity duration-500"></div>
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-              ></div>
-
-              <div className="relative z-100 bgblack">
-                <div
-                  className={`inline-flex p-3 rounded-xl mb-1 ${value.textColor} group-hover:scale-110 transition-transform duration-300`}
-                >
-                  {value.icon}
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-600 transition-colors duration-300">
+                    <reason.icon className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300" />
+                  </div>
                 </div>
-
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-800 transition-colors">
-                  {value.title}
-                </h3>
-
-                <p className="text-gray-600 leading-relaxed">{value.desc}</p>
-
-                {/* Animated underline */}
-                <div
-                  className={`w-0 group-hover:w-12 h-0.5 bg-gradient-to-r ${value.color} mt-4 transition-all duration-300`}
-                ></div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {reason.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {reason.description}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Stats Section */}
         <div
-          className={`grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 transition-all duration-700 delay-700 ${
+          className={`grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16 transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          {stats.map((stat, idx) => (
+          {stats.map((stat, index) => (
             <div
-              key={idx}
-              className="group text-center bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 hover:border-blue-100"
-              style={{ transitionDelay: `${idx * 100 + 700}ms` }}
+              key={index}
+              className="bg-white rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center"
             >
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-50 text-blue-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-                {stat.icon}
-              </div>
+              <stat.icon className="w-8 h-8 md:w-10 md:h-10 text-blue-600 mx-auto mb-3" />
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                {stat.number}
+              </h3>
+              <p className="text-xs md:text-sm text-gray-600">{stat.label}</p>
+            </div>
+          ))}
+        </div>
 
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                {isVisible && stat.suffix === "/7" ? (
-                  "24/7"
-                ) : (
-                  <CountUp
-                    end={stat.number}
-                    duration={2}
-                    delay={0.5}
-                    suffix={stat.suffix}
-                  />
-                )}
+        {/* What Sets Us Apart */}
+        <div
+          className={`grid md:grid-cols-2 gap-8 transition-all duration-700 delay-500 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          {differentiators.map((item, index) => (
+            <div key={index} className="bg-gray-50 rounded-xl p-6 md:p-8">
+              <div className="flex items-center mb-4">
+                <div className="p-3 bg-blue-100 rounded-lg mr-4">
+                  <item.icon className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  {item.title}
+                </h3>
               </div>
-
-              <div className="text-sm text-gray-600 font-medium">
-                {stat.label}
-              </div>
+              <ul className="space-y-3">
+                {item.points.map((point, idx) => (
+                  <li key={idx} className="flex items-start">
+                    <svg
+                      className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-gray-600">{point}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>

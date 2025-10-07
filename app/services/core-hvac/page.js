@@ -214,7 +214,7 @@ export default function ServicesPage() {
       </motion.section>
 
       {/* Services Overview */}
-      <section className="py-12 sm:py-16 bg-gray-50">
+      <section className="py-12 sm:py-16 border-y-2 border-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
