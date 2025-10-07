@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -39,7 +40,7 @@ export default function Footer() {
     { Icon: Facebook, href: "https://facebook.com" },
     { Icon: Instagram, href: "https://instagram.com" },
     { Icon: Linkedin, href: "https://linkedin.com" },
-    { Icon: MessageCircle, href: "https://wa.me/971501234567" },
+    { Icon: FaWhatsapp, href: "https://wa.me/971525183123" },
   ];
 
   const quickLinks = [
@@ -51,8 +52,14 @@ export default function Footer() {
   ];
 
   const serviceLinks = [
-    { name: "Electrical & Automation", href: "/services/electrical-automation" },
-    { name: "Mechanical & Installation", href: "/services/mechanical-installation" },
+    {
+      name: "Electrical & Automation",
+      href: "/services/electrical-automation",
+    },
+    {
+      name: "Mechanical & Installation",
+      href: "/services/mechanical-installation",
+    },
     { name: "Core HVAC Services", href: "/services/core-hvac" },
     { name: "Plumbing & Civil Support", href: "/services/plumbing-support" },
     { name: "Maintenance Services", href: "/services/maintenance" },
@@ -192,14 +199,15 @@ export default function Footer() {
                   <Phone className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <Link 
-                    href="tel:+971501234567"
+                  <Link
+                    href="tel:+971 52 518 3123"
                     className="text-gray-900 text-sm md:text-base hover:text-blue-600 transition cursor-pointer"
                   >
-                    +971 50 123 4567
+                    +971 52 518 3123
                   </Link>
                   <p className="text-xs text-gray-500 mt-1">
-                    Mon-Fri, 8:00 AM-6:00 PM
+                    Mon-Sat: 8 AM - 5 PM
+                    <br/> Fri: 8 AM - 12 PM, 2 PM - 5 PM
                   </p>
                 </div>
               </li>
@@ -208,11 +216,11 @@ export default function Footer() {
                   <Mail className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <Link 
-                    href="mailto:info@igelectromech.ae"
+                  <Link
+                    href="mailto:info@igelectromech.com"
                     className="text-gray-900 text-sm md:text-base hover:text-blue-600 transition cursor-pointer"
                   >
-                    info@igelectromech.ae
+                    info@igelectromech.com
                   </Link>
                   <p className="text-xs text-gray-500 mt-1">
                     We respond within 24 hours
@@ -224,10 +232,10 @@ export default function Footer() {
                   <MapPin className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-gray-900 text-sm md:text-base">Dubai, UAE</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    United Arab Emirates
+                  <p className="text-gray-900 text-sm md:text-base">
+                    Dubai Investment Park
                   </p>
+                  <p className="text-xs text-gray-500 mt-1">Dubai, UAE</p>
                 </div>
               </li>
             </ul>

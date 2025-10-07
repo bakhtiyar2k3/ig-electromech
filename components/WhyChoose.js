@@ -72,7 +72,7 @@ export default function WhyChooseUs() {
   const stats = [
     { number: "10+", label: "Years Experience", icon: FaAward },
     { number: "50+", label: "Projects Completed", icon: FaProjectDiagram },
-    { number: "50+", label: "Expert Team", icon: FaUsers },
+    { number: "20+", label: "Expert Team", icon: FaUsers },
     { number: "100%", label: "Client Satisfaction", icon: FaHandshake },
   ];
   const differentiators = [

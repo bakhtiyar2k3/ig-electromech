@@ -98,11 +98,9 @@ export default function Contact() {
                     Call Us
                   </h3>
                   <p className="text-gray-600 text-sm md:text-base break-all">
-                    +971 50 123 4567
+                    +971 52 518 3123
                   </p>
-                  <p className="text-gray-600 text-sm md:text-base break-all">
-                    +971 4 567 8901
-                  </p>
+                 
                 </div>
               </div>
 
@@ -115,11 +113,9 @@ export default function Contact() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
                     Email Us
                   </h3>
+                  
                   <p className="text-gray-600 text-sm md:text-base break-all">
-                    hello@igelectromech.ae
-                  </p>
-                  <p className="text-gray-600 text-sm md:text-base break-all">
-                    info@igelectromech.ae
+                    info@igelectromech.com
                   </p>
                 </div>
               </div>
@@ -134,7 +130,7 @@ export default function Contact() {
                     Visit Us
                   </h3>
                   <p className="text-gray-600 text-sm md:text-base">
-                    Dubai, United Arab Emirates
+                    Dubai Investment Park, UAE
                   </p>
                 </div>
               </div>
@@ -149,10 +145,10 @@ export default function Contact() {
                     Working Hours
                   </h3>
                   <p className="text-gray-600 text-sm md:text-base">
-                    Mon - Fri: 8:00 AM - 6:00 PM
+                    Mon - Sat: 8 AM - 5 PM
                   </p>
                   <p className="text-gray-600 text-sm md:text-base">
-                    Sat: 9:00 AM - 1:00 PM
+                    Fri: 8 AM - 12 PM, 2 PM - 5 PM
                   </p>
                 </div>
               </div>
@@ -234,7 +230,7 @@ export default function Contact() {
                 {/* WhatsApp Button */}
                 <div className="w-full sm:w-auto">
                   <a
-                    href="https://wa.me/971501234567"
+                    href="https://wa.me/971525183123"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto flex items-center justify-center gap-2 border border-green-400 text-green-700 bg-green-50 py-4 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-green-100 transition-all duration-300 group whitespace-nowrap min-w-[160px]"

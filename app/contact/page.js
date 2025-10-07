@@ -136,25 +136,28 @@ export default function ContactPage() {
                 icon: <Phone className="w-5 h-5 md:w-6 md:h-6" />,
                 title: "Call Us",
                 color: "bg-red-100 text-red-500",
-                lines: ["+971 50 123 4567", "+971 4 567 8901"],
+                lines: ["+971 52 518 3123"],
               },
               {
                 icon: <Mail className="w-5 h-5 md:w-6 md:h-6" />,
                 title: "Email Us",
                 color: "bg-blue-100 text-blue-500",
-                lines: ["hello@igelectromech.ae", "info@igelectromech.ae"],
+                lines: ["info@igelectromech.com"],
               },
               {
                 icon: <MapPin className="w-5 h-5 md:w-6 md:h-6" />,
                 title: "Visit Us",
                 color: "bg-red-100 text-red-500",
-                lines: ["Dubai, United Arab Emirates"],
+                lines: ["Dubai Investment Park, Dubai, UAE"],
               },
               {
                 icon: <Clock className="w-5 h-5 md:w-6 md:h-6" />,
                 title: "Working Hours",
                 color: "bg-blue-100 text-blue-500",
-                lines: ["Mon - Fri: 8:00 AM - 6:00 PM", "Sat: 9:00 AM - 1:00 PM"],
+                lines: [
+                  "Mon - Sat: 8 AM - 5 PM",
+                  " Fri: 8 AM - 12 PM, 2 PM - 5 PM",
+                ],
               },
             ].map((item, i) => (
               <motion.div
@@ -208,7 +211,10 @@ export default function ContactPage() {
                   Send Message/Enquiry
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-6 md:space-y-8"
+                >
                   <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}

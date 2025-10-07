@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import {
   FaUserGraduate,
   FaCogs,
@@ -19,6 +20,7 @@ export default function AboutUs() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,26 +49,33 @@ export default function AboutUs() {
       title: "Certified Excellence",
       description:
         "Industry-certified professionals delivering world-class standards",
-      color: "[#f7d562]",
+      color: "#f7d562",
+      bgColor: "rgba(247, 213, 98, 0.1)",
+      iconBg: "rgba(247, 213, 98, 0.2)",
     },
-
     {
       icon: FaCogs,
       title: "Complete Solutions",
       description: "End-to-end electromechanical services under one roof",
-      color: "[#fd5252]",
+      color: "#fd5252",
+      bgColor: "rgba(253, 82, 82, 0.1)",
+      iconBg: "rgba(253, 82, 82, 0.2)",
     },
     {
       icon: FaHandshake,
       title: "Client First",
       description: "Your success drives our commitment to excellence",
-      color: "[#3a7cec]",
+      color: "#3a7cec",
+      bgColor: "rgba(58, 124, 236, 0.1)",
+      iconBg: "rgba(58, 124, 236, 0.2)",
     },
     {
       icon: FaLeaf,
       title: "Eco-Conscious",
       description: "Sustainable practices for a greener tomorrow",
-      color: "[#1cd43e]",
+      color: "#1cd43e",
+      bgColor: "rgba(28, 212, 62, 0.1)",
+      iconBg: "rgba(28, 212, 62, 0.2)",
     },
   ];
 
@@ -81,7 +90,7 @@ export default function AboutUs() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#f7d562] relative py-16 md:py-24 bg-gradient-to-br from-gray-50 to-white overflow-hidden px-6 lg:px-15"
+      className="bg-[#f7d562] relative py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white overflow-hidden px-6 lg:px-15"
     >
       {/* Animated Background Pattern */}
       <div className="absolute inset-0 opacity-5">
@@ -150,27 +159,29 @@ export default function AboutUs() {
               ))}
             </div>
 
-            {/* CTA Button */}
-            <div
-              className={`mt-12 md:mt-16 text-center transition-all duration-700 delay-500 ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <div className="inline-block p-[2px] rounded-lg bg-gradient-to-r from-red-500 to-blue-500 hover:from-blue-500 hover:to-red-500 ">
-                <Link
-                  href="/about"
-                  className="group inline-flex items-center px-5 py-2.5 md:px-6 md:py-3 bg-white text-black font-medium rounded-lg  transition-all duration-300 gap-2 text-sm md:text-base"
-                >
-                  <span>Learn More About Us</span>
-                  <FaArrowRight
-                    size={14}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </Link>
+            {/* CTA Button - Only show when NOT on /about page */}
+            {pathname !== "/about" && (
+              <div
+                className={`mt-12 md:mt-16 text-center transition-all duration-700 delay-500 ${
+                  isVisible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }`}
+              >
+                <div className="inline-block p-[2px] rounded-lg bg-gradient-to-r from-red-500 to-blue-500 hover:from-blue-500 hover:to-red-500 ">
+                  <Link
+                    href="/about"
+                    className="group inline-flex items-center px-5 py-2.5 md:px-6 md:py-3 bg-white text-black font-medium rounded-lg  transition-all duration-300 gap-2 text-sm md:text-base"
+                  >
+                    <span>Learn More About Us</span>
+                    <FaArrowRight
+                      size={14}
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Right Image Section */}
@@ -213,7 +224,7 @@ export default function AboutUs() {
 
         {/* Values Grid */}
         <div
-          className={`transition-all duration-700 delay-500 ${
+          className={`transition-all duration-700 delay-500 mt-20 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
@@ -228,14 +239,19 @@ export default function AboutUs() {
               >
                 {/* Background Decoration */}
                 <div
-                  className={`absolute top-0 right-0 w-24 h-24 bg-${value.color} rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 transition-transform duration-500`}
+                  className="absolute top-0 right-0 w-24 h-24 rounded-full -translate-y-12 translate-x-12 group-hover:scale-150 transition-transform duration-500"
+                  style={{ backgroundColor: value.color, opacity: 0.15 }}
                 ></div>
 
                 <div className="relative z-10">
                   <div
-                    className={`inline-flex p-3 bg-${value.color} text-${value.color}-600 rounded-lg mb-4`}
+                    className="inline-flex p-3 rounded-lg mb-4"
+                    style={{ backgroundColor: value.iconBg }}
                   >
-                    <value.icon className="w-6 h-6" />
+                    <value.icon 
+                      className="w-6 h-6" 
+                      style={{ color: value.color }}
+                    />
                   </div>
                   <h4 className="text-lg font-bold text-gray-900 mb-2">
                     {value.title}
