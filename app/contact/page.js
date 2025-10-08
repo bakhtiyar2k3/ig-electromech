@@ -4,8 +4,42 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle, X, Loader2 } from "lucide-react";
 import { IoSend } from "react-icons/io5";
+
+// Toast Component
+const Toast = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const bgColor = type === 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
+  const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
+  const Icon = type === 'success' ? CheckCircle : AlertCircle;
+  const iconColor = type === 'success' ? 'text-green-400' : 'text-red-400';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 100 }}
+      className={`fixed top-20 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg border ${bgColor} shadow-lg max-w-md`}
+    >
+      <Icon className={`w-5 h-5 ${iconColor} flex-shrink-0`} />
+      <p className={`${textColor} text-sm font-medium flex-1`}>{message}</p>
+      <button
+        onClick={onClose}
+        className={`${textColor} hover:opacity-70 transition-opacity`}
+      >
+        <X className="w-4 h-4" />
+      </button>
+    </motion.div>
+  );
+};
 
 export default function ContactPage() {
   const [enquiryList, setEnquiryList] = useState([]);
@@ -14,8 +48,11 @@ export default function ContactPage() {
     email: "",
     phone: "",
     message: "",
+    company: "", 
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const storedList = JSON.parse(localStorage.getItem("enquiryList")) || [];
@@ -26,26 +63,73 @@ export default function ContactPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const showToast = (message, type) => {
+    setToast({ message, type });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!form.name || !form.email || !form.message) {
+      showToast("Please fill in all required fields", "error");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      showToast("Please enter a valid email address", "error");
+      return;
+    }
+
+    // Phone validation (optional but if provided, should be valid)
+    if (form.phone && !/^[\d\s\-\+KATEX_INLINE_OPENKATEX_INLINE_CLOSE]+$/.test(form.phone)) {
+      showToast("Please enter a valid phone number", "error");
+      return;
+    }
+
+    // Honeypot check
+    if (form.company) {
+      showToast("Something went wrong. Please try again.", "error");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    const payload = {
-      ...form,
-      enquiryList,
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log("Form submitted:", payload);
-
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("Your enquiry has been submitted successfully!");
-      setForm({ name: "", email: "", phone: "", message: "" });
-      localStorage.setItem("enquiryList", JSON.stringify([]));
-      setEnquiryList([]);
-    } catch (error) {
-      alert("There was an error submitting your enquiry. Please try again.");
+      // Include enquiry list in the submission
+      const formDataWithEnquiries = {
+        ...form,
+        enquiryList: enquiryList.length > 0 ? enquiryList : undefined,
+      };
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formDataWithEnquiries),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        showToast(
+          enquiryList.length > 0 
+            ? "Your message and product enquiries have been sent successfully! We'll get back to you soon."
+            : "Message sent successfully! We'll get back to you soon.",
+          "success"
+        );
+        
+        // Clear form and enquiry list
+        setForm({ name: "", email: "", phone: "", message: "", company: "" });
+        localStorage.setItem("enquiryList", JSON.stringify([]));
+        setEnquiryList([]);
+      } else {
+        showToast(data.message || "Something went wrong. Please try again.", "error");
+      }
+    } catch (err) {
+      console.error("Contact form error:", err);
+      showToast("Failed to send message. Please check your connection and try again.", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -55,15 +139,26 @@ export default function ContactPage() {
     const updatedList = enquiryList.filter((item) => item !== itemToRemove);
     setEnquiryList(updatedList);
     localStorage.setItem("enquiryList", JSON.stringify(updatedList));
+    showToast("Product removed from enquiry list", "success");
   };
 
   const clearAllEnquiries = () => {
     setEnquiryList([]);
     localStorage.setItem("enquiryList", JSON.stringify([]));
+    showToast("All products cleared from enquiry list", "success");
   };
 
   return (
     <div className="bg-white pt-20 max-w-7xl mx-auto">
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0, y: 40 }}
@@ -209,6 +304,11 @@ export default function ContactPage() {
               >
                 <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 pb-2 border-b border-gray-200 text-gray-700">
                   Send Message/Enquiry
+                  {enquiryList.length > 0 && (
+                    <span className="text-sm font-normal text-blue-600 ml-2">
+                      ({enquiryList.length} products selected)
+                    </span>
+                  )}
                 </h2>
 
                 <form
@@ -236,8 +336,9 @@ export default function ContactPage() {
                         value={form.name}
                         onChange={handleChange}
                         placeholder="Your full name"
-                        className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2"
+                        className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         required
+                        disabled={isSubmitting}
                       />
                     </div>
 
@@ -255,8 +356,9 @@ export default function ContactPage() {
                         value={form.email}
                         onChange={handleChange}
                         placeholder="your.email@example.com"
-                        className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2"
+                        className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         required
+                        disabled={isSubmitting}
                       />
                     </div>
                   </motion.div>
@@ -280,7 +382,8 @@ export default function ContactPage() {
                       value={form.phone}
                       onChange={handleChange}
                       placeholder="+971 XX XXX XXXX"
-                      className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2"
+                      className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={isSubmitting}
                     />
                   </motion.div>
 
@@ -303,39 +406,33 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="Please describe your requirements..."
                       rows="4"
-                      className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2"
+                      className="w-full p-2 text-sm border-gray-400 border-b focus:border-gray-900 focus:outline-none focus:border-b-2 disabled:opacity-50 disabled:cursor-not-allowed resize-none"
                       required
+                      disabled={isSubmitting}
                     ></textarea>
                   </motion.div>
 
+                  {/* Honeypot field */}
+                  <input
+                    type="text"
+                    name="company"
+                    value={form.company || ""}
+                    onChange={handleChange}
+                    style={{ display: "none" }}
+                    tabIndex="-1"
+                    autoComplete="off"
+                  />
+
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={!isSubmitting ? { scale: 1.05 } : {}}
+                    whileTap={!isSubmitting ? { scale: 0.95 } : {}}
                     type="submit"
                     disabled={isSubmitting}
-                    className="gradient-border text-black py-3 px-4 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed group w-full md:w-auto"
+                    className="gradient-border text-black py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed group w-full md:w-auto"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-2">
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
+                        <Loader2 className="w-5 h-5 animate-spin" />
                         Sending...
                       </span>
                     ) : (
@@ -348,6 +445,12 @@ export default function ContactPage() {
                       </div>
                     )}
                   </motion.button>
+
+                  {enquiryList.length > 0 && (
+                    <p className="text-xs text-gray-500 italic">
+                      * Your selected products will be included in this enquiry
+                    </p>
+                  )}
                 </form>
               </motion.div>
 
@@ -367,7 +470,8 @@ export default function ContactPage() {
                       </h3>
                       <button
                         onClick={clearAllEnquiries}
-                        className="text-xs text-red-600 hover:text-red-700 font-medium cursor-pointer"
+                        className="text-xs text-red-600 hover:text-red-700 font-medium cursor-pointer transition-colors"
+                        disabled={isSubmitting}
                       >
                         Clear All
                       </button>
@@ -397,12 +501,13 @@ export default function ContactPage() {
                             className="flex items-center justify-between p-2 rounded-lg group hover:bg-gray-50 transition-colors"
                           >
                             <span className="text-gray-700 text-xs font-medium flex-1 truncate">
-                              {item}
+                              {index + 1}. {item}
                             </span>
                             <button
                               onClick={() => removeFromEnquiry(item)}
                               className="opacity-70 lg:opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:text-red-700 transition-opacity flex-shrink-0"
                               title="Remove item"
+                              disabled={isSubmitting}
                             >
                               <svg
                                 className="w-3 h-3"
@@ -421,6 +526,11 @@ export default function ContactPage() {
                           </motion.div>
                         ))}
                       </motion.div>
+                    </div>
+                    <div className="p-3 border-t border-gray-200 bg-gray-50 rounded-b-md">
+                      <p className="text-xs text-gray-600 text-center">
+                        These products will be sent with your enquiry
+                      </p>
                     </div>
                   </div>
                 </motion.div>

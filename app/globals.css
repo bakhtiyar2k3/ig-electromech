@@ -55,7 +55,7 @@
 }
 
 .animate-fall {
-  animation: fall 0.5s ease-out forwards;
+  animation: fall .7s ease-out forwards;
 }
 
 :root {
